@@ -25,6 +25,5 @@ const resize = () => {
   Object.keys(css).forEach((property: string) => { 
     containerEl.style.setProperty(property, css[property])  
   });
-  console.log("resizing...");
 }
-document.addEventListener('resize', resize);
+window.addEventListener('resize', resize);
