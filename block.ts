@@ -20,4 +20,4 @@ class Block implements BlockOption {
   left = () => {}
 }
 
-export {Block}
+export default Block
