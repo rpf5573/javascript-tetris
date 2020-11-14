@@ -1,5 +1,5 @@
 import { GameStates } from "./types";
-import Block from 'block'
+import Block from './block';
 import { blankMatrix } from "./const";
 
 const gameStates: GameStates = {
