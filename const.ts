@@ -1,3 +1,5 @@
+import {BlockShape, YXRotateOrigin, FillLine, BlankLine, Matrix} from './types';
+
 const blockShape: BlockShape = {
   I: [
     [1, 1, 1, 1],
@@ -27,7 +29,6 @@ const blockShape: BlockShape = {
     [1, 1, 1],
   ],
 };
-
 const yxRotateOrigin: YXRotateOrigin = {
   I: [
     [-1, 1],
@@ -55,7 +56,6 @@ const yxRotateOrigin: YXRotateOrigin = {
     [0, -1]
   ],
 };
-
 const blockTypes: string[] = Object.keys(blockShape);
 const speeds: number[] = [800, 650, 500, 370, 250, 160];
 const delays: number[] = [50, 60, 70, 80, 90, 100];

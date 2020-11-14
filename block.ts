@@ -1,3 +1,4 @@
+import {BlockOption, BlockType, BlockShape, YX} from './types';
 class Block implements BlockOption {
   type: BlockType;
   rotateIndex: number;
@@ -19,4 +20,4 @@ class Block implements BlockOption {
   left = () => {}
 }
 
-export { Block }
+export {Block}
