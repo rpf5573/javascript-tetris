@@ -3,6 +3,7 @@
     "module": "system",
     "noImplicitAny": true,
     "sourceMap": true,
-    "outFile": "./main.js",
-  }
+    "outFile": "./dist/main.js",
+  },
+  "include": ["./src/*"]
 }
