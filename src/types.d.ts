@@ -23,4 +23,4 @@ export type GameStates = {
   point: number,
   lock: boolean
 }
-export type keyType = 'up' | 'right' | 'down' | 'left' | 'space' | 'r' | 's' | 'p'
+export type KeyType = 'up' | 'right' | 'down' | 'left' | 'space' | 'r' | 'p'
