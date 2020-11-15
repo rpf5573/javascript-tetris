@@ -30,4 +30,7 @@ module.exports = {
       template: join(__dirname, '/src/index.html')
     })
   ],
+  resolve: {
+    extensions: ['.js', '.ts', '.json']
+  }
 };
