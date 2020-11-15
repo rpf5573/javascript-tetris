@@ -70,14 +70,14 @@ const clearPoints: number[] = [100, 300, 700, 1500];
 const StorageKey: string = 'REACT_TETRIS';
 const maxPoint: number = 999999;
 const eachLines: number = 20;
-const keyCodeWithTypes: {[key: number]: keyType;} = {
+const keyCodeWithType: {[key: number]: keyType;} = {
   37: 'left', 38: 'up', 39: 'right', 40: 'down',
   32: 'space', 83: 's', 82: 'r', 80: 'p',
 }
-const keyCodes = Object.keys(keyCodeWithTypes).map(e => parseInt(e, 10));
+const keyCodes = Object.keys(keyCodeWithType).map(e => parseInt(e, 10));
 
 export {
   blockShape, yxRotateOrigin, blockTypes, speeds,
   delays, fillLine, blankLine, blankMatrix, clearPoints,
-  StorageKey, maxPoint, eachLines, keyCodeWithTypes, keyCodes
+  StorageKey, maxPoint, eachLines, keyCodeWithType, keyCodes
 }
