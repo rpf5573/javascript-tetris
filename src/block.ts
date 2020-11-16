@@ -16,7 +16,14 @@ class Block implements BlockOption {
   rotate = () => {
     const shape = this.shape;
   }
-  fall = (n = 1) => {}
+  fall = (n = 1): Block => {
+    return new Block({
+      type: this.type,
+      yx: [this.yx[0] + n, this.yx[1]],
+      rotateIndex: this.rotateIndex,
+      timeStamp: Date.now()
+    });
+  }
   right = () => {}
   left = () => {}
 }

@@ -9,34 +9,42 @@ class Matrix {
   timer: NodeJS.Timeout;
   constructor() {
     this.matrixNode = document.querySelector(".game-screen > .matrix");
-    const gs = window.gameState;
-    gs.matrixState = this.addBlock(gs.matrixState, gs.currentBlock);
-    this.render(gs.matrixState);
+    this.render(window.gameState.matrixState);
   }
   removeChildren = (parentNode: HTMLDivElement) => {
     let child: ChildNode = null;
     while(child = parentNode.lastChild) { parentNode.removeChild(child); }
   }
   autoDown = () => {
-    this.timer = setTimeout(() => {
-      const gs = window.gameState;
-      const currentBlock = gs.currentBlock;
-      const tempMatrixState = this.removeBlock(gs.matrixState, currentBlock);
-      const nextBlock = new Block({
-        rotateIndex: currentBlock.rotateIndex,
-        type: currentBlock.type,
-        timeStamp: Date.now(),
-        yx: [currentBlock.yx[0]+1, currentBlock.yx[1]]
-      });
-      if (this.tryMove(tempMatrixState, nextBlock)) {
-        gs.matrixState = this.addBlock(tempMatrixState, nextBlock);
+    let gs = window.gameState;
+    let currentBlock = gs.currentBlock;
+    const fall = () => {
+      gs = window.gameState;
+      currentBlock = gs.currentBlock;
+      const nextBlock = currentBlock.fall();
+      if (this.tryMove(gs.matrixState, nextBlock)) {
+        this.render(this.addBlock(gs.matrixState, nextBlock)); // 핵심은 여기서 update 된 matrix를 gameState.matrixState 에 넣지 않는다는거~
         gs.currentBlock = nextBlock;
-        this.render(gs.matrixState);
+        this.timer = setTimeout(fall, 1000);
       } else {
-        gs.currentBlock = getNextBlock();
+        // 다음 블럭이 못가면, 현재 블럭을 matrixState에 고정(?) 시킨다
+        gs.matrixState = this.addBlock(gs.matrixState, currentBlock);
+        this.nextAround();
       }
+    }
+    clearTimeout(this.timer);
+    this.timer = setTimeout(fall, 1000);
+  }
+  nextAround = () => {
+    const gs = window.gameState;
+    const matrix = gs.matrixState;
+    clearTimeout(this.timer);
+    gs.lock = true;
+    setTimeout(() => {
+      gs.lock = false;
+      gs.currentBlock = getNextBlock();
       this.autoDown();
-    }, 300);
+    }, 100);
   }
   tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
     const yx = nextBlock.yx;
@@ -46,7 +54,7 @@ class Matrix {
       line.every((blockState, j) => {
         if (yx[1] < 0) { return false; } // left
         if (yx[1] + width > 10) { return false; } // right
-        if (yx[0] + i < 0) { return true; } // top
+        if (yx[0] + i < 0) { return true; } // top 위로 넘어가는건 ㄱㅊ아
         if (yx[0] + i >= 20) { return false; } // bottom
         if (blockState === 1) {
           const y = yx[0] + i;
@@ -57,19 +65,6 @@ class Matrix {
         return true;
       })
     ));
-  }
-  removeBlock = (matrixState: MatrixState, block: Block): MatrixState => {
-    const {yx, shape} = block;
-    const newMatrixState = deepCopy(matrixState);
-    shape.forEach((line, i) => {
-      line.forEach((blockState, j) => {
-        const ny = yx[0]+i;
-        const nx = yx[1]+j;
-        if (ny < 0 || ny >= 20 || nx < 0 || nx >= 10) { return false }
-        if (newMatrixState[ny][nx] == 1) { newMatrixState[ny][nx] = 0; }
-      });
-    });
-    return newMatrixState;
   }
   addBlock = (matrixState: MatrixState, block: Block): MatrixState => {
     const {yx, shape} = block;

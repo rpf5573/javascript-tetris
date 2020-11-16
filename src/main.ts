@@ -45,4 +45,4 @@ window.gameState = {
 }
 const keyboard = new Keyboard();
 const matrix = new Matrix();
-// matrix.autoDown();
+matrix.autoDown();
