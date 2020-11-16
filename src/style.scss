@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+$yellow: #efcc19;
+$white: #fff;
+$screenPadding: 8px;
+$screenBorderWidth: 2px;
+$matrixPadding: 4px;
+$matrixBorderWidth: $screenBorderWidth;
+$statusPadding: $matrixPadding;
+$statusBorderWidth: $matrixBorderWidth;
+$blockPadding: 2px;
+$blockBorderWidth: 2px;
+$blockMarginRight: 2px;
+$blockMarginBottom: 2px;
+$blockContentWidth: 43px;
+$blockContentHeight: $blockContentWidth;
+$blockWidth: $blockContentWidth + $blockMarginRight;
+$blockHeight: $blockContentHeight + $blockMarginBottom;
+
+$matrixContentWidth: $blockWidth*10;
+$matrixContentHeight: $blockHeight*20;
+$statusContentWidth: 250px;
+$statusContentHeight: $matrixContentHeight;
+$matrixWidth: $matrixContentWidth + $matrixPadding*2 + $matrixBorderWidth*2;
+$matrixHeight: $matrixContentHeight + $matrixPadding*2 + $matrixBorderWidth*2;
+$statusWidth: $statusContentWidth + $statusPadding*2 + $statusBorderWidth*2;
+$statusHeight: $matrixHeight;
+$screenWidth: $matrixWidth + $statusWidth + $screenPadding*2 + $screenBorderWidth*2;
+$screenHeight: $matrixHeight + $screenPadding*2 + $screenBorderWidth*2;
+$wholeWidth: $screenWidth;
+$wholeHeight: $screenHeight;
+
+#page {
+  overflow: hidden;
+  .container {
+    width: $wholeWidth;
+    height: $wholeHeight;
+    box-shadow: inset 0 0 10px $white;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -($wholeHeight/2);
+    margin-left: -($wholeWidth/2);
+  }
+}
+
+.game-screen {
+  background: #9ead86;
+  padding: $screenPadding;
+  border: $screenBorderWidth solid #494536;
+  display: inline-flex;
+  width: $screenWidth;
+  height: $screenHeight;
+
+  .matrix {
+    border: $matrixBorderWidth solid #000;
+    padding: $matrixPadding;
+    width: $matrixWidth;
+    .line {
+      .b {
+        width: $blockContentWidth;
+        height: $blockContentHeight;
+        padding: $blockPadding;
+        border: $blockBorderWidth solid #879372;
+        margin-right: $blockMarginRight;
+        margin-bottom: $blockMarginBottom;
+        float: left;
+      }
+    }
+  }
+  .status {
+    width: $statusWidth;
+    border: $statusBorderWidth solid black;
+    padding: $statusPadding;
+  }
+}
