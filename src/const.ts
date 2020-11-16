@@ -1,10 +1,7 @@
 import {BlockShape, YXRotateOrigin, FillLine, BlankLine, Matrix, KeyType} from './types';
 
-<<<<<<< HEAD
 const width: number = 744;
 const height: number = 932; 
-=======
->>>>>>> 10d1511b24d3fb006ecd7fabec0a8c8de33d43cb
 const blockShape: BlockShape = {
   I: [
     [1, 1, 1, 1],
