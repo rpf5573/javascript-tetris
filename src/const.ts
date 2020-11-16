@@ -1,4 +1,4 @@
-import {BlockShape, YXRotateOrigin, FillLine, BlankLine, Matrix, KeyType} from './types';
+import {BlockShape, YXRotateOrigin, FillLine, Line, MatrixState, KeyType} from './types';
 
 const width: number = 744;
 const height: number = 932; 
@@ -62,11 +62,11 @@ const blockTypes: string[] = Object.keys(blockShape);
 const speeds: number[] = [800, 650, 500, 370, 250, 160];
 const delays: number[] = [50, 60, 70, 80, 90, 100];
 const fillLine: FillLine = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-const blankLine: BlankLine = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const blankMatrix: Matrix = (() => {
-  const matrix: Matrix = [];
-  for (let i = 0; i < 20; i++) { matrix.push([...blankLine]); }
-  return matrix;
+const blankLine: Line = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const blankMatrix: MatrixState = (() => {
+  const matrixState: MatrixState = [];
+  for (let i = 0; i < 20; i++) { matrixState.push([...blankLine]); }
+  return matrixState;
 })();
 const clearPoints: number[] = [100, 300, 700, 1500];
 const StorageKey: string = 'REACT_TETRIS';

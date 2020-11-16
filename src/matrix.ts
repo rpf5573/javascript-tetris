@@ -1,25 +1,31 @@
 import { blankMatrix } from './const';
+import { MatrixState, Line } from './types';
 
 class Matrix {
-  matrix: HTMLDivElement
+  matrixNode: HTMLDivElement
   constructor() {
-    this.matrix = document.querySelector(".game-screen > .matrix");
+    this.matrixNode = document.querySelector(".game-screen > .matrix");
+    this.render(blankMatrix);
   }
   removeChildren = (parentNode: HTMLDivElement) => {
     let child: ChildNode = null;
     while(child = parentNode.lastChild) { parentNode.removeChild(child); }
   }
-  render = () => {
-    this.removeChildren(this.matrix);
-    blankMatrix.forEach(blankLine => {
-      const line = document.createElement("div");
-      line.className = "line";
-      blankLine.forEach(el => {
+  autoDown = (matrixState: MatrixState) => {
+    
+  }
+  render = (matrixState: MatrixState) => {
+    this.removeChildren(this.matrixNode); // 비우고 시작하자
+    matrixState.forEach((line: Line) => {
+      const lineNode = document.createElement("div");
+      lineNode.className = 'line';
+      line.forEach(blockState => {
         const blockNode = document.createElement("div");
-        blockNode.className = "b";
-        line.appendChild(blockNode);
+        blockNode.className = 'b';
+        if (blockState === 1) { blockNode.classList.add("active") }
+        lineNode.appendChild(blockNode);
       });
-      this.matrix.appendChild(line);
+      this.matrixNode.appendChild(lineNode);
     });
   }
 }

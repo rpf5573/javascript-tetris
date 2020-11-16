@@ -11,7 +11,7 @@ $matrixPadding: 4px;
 $matrixBorderWidth: $screenBorderWidth;
 $statusPadding: $matrixPadding;
 $statusBorderWidth: $matrixBorderWidth;
-$blockPadding: 2px;
+$blockPadding: 4px;
 $blockBorderWidth: 2px;
 $blockMarginRight: 2px;
 $blockMarginBottom: 2px;
@@ -19,6 +19,8 @@ $blockContentWidth: 43px;
 $blockContentHeight: $blockContentWidth;
 $blockWidth: $blockContentWidth + $blockMarginRight;
 $blockHeight: $blockContentHeight + $blockMarginBottom;
+$blockInnerWidth: $blockContentWidth - ($blockPadding*2 + $blockBorderWidth*2);
+$blockInnerHeight: $blockInnerWidth;
 
 $matrixContentWidth: $blockWidth*10;
 $matrixContentHeight: $blockHeight*20;
@@ -69,6 +71,20 @@ $wholeHeight: $screenHeight;
         margin-right: $blockMarginRight;
         margin-bottom: $blockMarginBottom;
         float: left;
+        &:after {
+          content: "";
+          display: block;
+          width: $blockInnerWidth;
+          height: $blockInnerHeight;
+          background: #879372;
+          overflow: hidden;
+        }
+        &.active {
+          border: $blockBorderWidth solid black;
+          &:after {
+            background: black;
+          }
+        }
       }
     }
   }

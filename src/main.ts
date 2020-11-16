@@ -35,4 +35,3 @@ window.addEventListener('resize', resize);
 
 const keyboard = new Keyboard();
 const matrix = new Matrix();
-matrix.render();
