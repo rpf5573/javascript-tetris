@@ -1,7 +1,7 @@
 import Block from './block';
 import { blankMatrix, blockShapes } from './const';
 import { MatrixState, Line } from './types';
-import { deepCopy } from './utils';
+import { deepCopy, getNextBlock } from './utils';
 
 class Matrix {
   matrixNode: HTMLDivElement;
@@ -22,21 +22,23 @@ class Matrix {
       const gs = window.gameState;
       const currentBlock = gs.currentBlock;
       const tempMatrixState = this.removeBlock(gs.matrixState, currentBlock);
-      if (this.tryMove()) {
-        const nextBlock = result as Block;
+      const nextBlock = new Block({
+        rotateIndex: currentBlock.rotateIndex,
+        type: currentBlock.type,
+        timeStamp: Date.now(),
+        yx: [currentBlock.yx[0]+1, currentBlock.yx[1]]
+      });
+      if (this.tryMove(tempMatrixState, nextBlock)) {
         gs.matrixState = this.addBlock(tempMatrixState, nextBlock);
         gs.currentBlock = nextBlock;
         this.render(gs.matrixState);
       } else {
-        this.count += 1;
-        if (this.count > 10) {
-          clearTimeout(this.timer);
-        }
+        gs.currentBlock = getNextBlock();
       }
       this.autoDown();
-    }, 1300);
+    }, 300);
   }
-  tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => { // 方块是否能移到到指定位置
+  tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
     const yx = nextBlock.yx;
     const shape = nextBlock.shape;
     const width = shape[0].length;
@@ -56,39 +58,15 @@ class Matrix {
       })
     ));
   }
-  tryDown = (matrixState: MatrixState, block: Block): boolean | Block => {
-    const yx = [block.yx[0], block.yx[1]]
-    const shape = block.shape;
-    // 중간에 함수를 탈출해야 하기 때문에 forEach가 아닌, for문을 사용했다
-    for (let i = 0; i < shape.length; i++) {
-      for (let j = 0; j < shape[i].length; j++) {
-        if (shape[i][j] == 0) { continue } // 0이면 따질게 없잖아
-        
-        const dy = i+1;
-        const dx = j;
-        const ny = (yx[0]+dy);
-        const nx = (yx[1]+dx);
-        if (ny < 0 || ny >= 20 || nx < 0 || nx >= 10) { continue }
-        if (matrixState[ny][nx] === 1) { return false }
-      }
-    }
-    const newBlock = new Block({
-      type: block.type,
-      rotateIndex: block.rotateIndex,
-      timeStamp: Date.now(),
-      yx: [yx[0]+1, yx[1]]
-    });
-    return newBlock;
-  }
   removeBlock = (matrixState: MatrixState, block: Block): MatrixState => {
     const {yx, shape} = block;
     const newMatrixState = deepCopy(matrixState);
-    shape.forEach((line, dy) => {
-      line.forEach((blockState, dx) => {
-        const ny = yx[0]+dy;
-        const nx = yx[1]+dx;
+    shape.forEach((line, i) => {
+      line.forEach((blockState, j) => {
+        const ny = yx[0]+i;
+        const nx = yx[1]+j;
         if (ny < 0 || ny >= 20 || nx < 0 || nx >= 10) { return false }
-        newMatrixState[ny][nx] = 0;
+        if (newMatrixState[ny][nx] == 1) { newMatrixState[ny][nx] = 0; }
       });
     });
     return newMatrixState;
@@ -96,12 +74,14 @@ class Matrix {
   addBlock = (matrixState: MatrixState, block: Block): MatrixState => {
     const {yx, shape} = block;
     const newMatrixState = deepCopy(matrixState);
-    shape.forEach((line, dy) => {
-      line.forEach((blockState, dx) => {
-        const ny = yx[0]+dy;
-        const nx = yx[1]+dx;
-        if (ny < 0 || ny >= 20 || nx < 0 || nx >= 10) { return }
-        newMatrixState[ny][nx] = 1;
+    shape.forEach((line, i) => {
+      line.forEach((blockState, j) => {
+        const y = yx[0]+i;
+        const x = yx[1]+j;
+        if (y < 0 || y >= 20 || x < 0 || x >= 10) { return }
+        if (blockState == 1) {
+          if (newMatrixState[y][x] == 0) { newMatrixState[y][x] = 1; }
+        }
       });
     });
     return newMatrixState;

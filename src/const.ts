@@ -1,4 +1,4 @@
-import {BlockShapes, YXRotateOrigin, FillLine, Line, MatrixState, KeyType} from './types';
+import {BlockShapes, YXRotateOrigin, FillLine, Line, MatrixState, KeyType, YX} from './types';
 
 const width: number = 744;
 const height: number = 932; 
@@ -59,6 +59,15 @@ const yxRotateOrigin: YXRotateOrigin = {
     [0, -1]
   ],
 };
+const yxStartPosition: {[key: string]: YX} = {
+  I: [0, 3],
+  L: [-1, 4],
+  J: [-1, 4],
+  Z: [-1, 4],
+  S: [-1, 4],
+  O: [-1, 4],
+  T: [-1, 4],
+}
 const speeds: number[] = [800, 650, 500, 370, 250, 160];
 const delays: number[] = [50, 60, 70, 80, 90, 100];
 const fillLine: FillLine = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -80,7 +89,7 @@ const keyCodes = Object.keys(keyCodeWithType).map(e => parseInt(e, 10));
 
 export {
   width, height,
-  blockShapes, yxRotateOrigin, blockTypes, speeds,
+  blockShapes, yxRotateOrigin, blockTypes, speeds, yxStartPosition,
   delays, fillLine, blankLine, blankMatrix, clearPoints,
   StorageKey, maxPoint, eachLines, keyCodeWithType, keyCodes
 }
