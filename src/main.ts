@@ -1,7 +1,8 @@
 import './style.scss';
 import Keyboard from './keyboard';
-import { width, height } from './const';
+import { width, height, blankMatrix, blockShapes, blockTypes } from './const';
 import Matrix from './matrix';
+import Block from './block';
 
 /* 화면 크기가 바뀔때마다 게임판의 크기도 조정한다 */
 const resize = () => {
@@ -33,5 +34,14 @@ const resize = () => {
 resize();
 window.addEventListener('resize', resize);
 
+/** gameState를 초기화한다 */
+window.gameState = {
+  currentBlock: new Block({yx: [-1, 4], type: blockTypes.O, rotateIndex: 0, timeStamp: Date.now() }),
+  matrixState: blankMatrix,
+  speed: 0,
+  point: 0,
+  lock: false
+}
 const keyboard = new Keyboard();
 const matrix = new Matrix();
+matrix.autoDown();
