@@ -27,5 +27,9 @@ declare global {
     gameState: GameState;
   }
 }
+export interface KeyControl {
+  keyDown: (e: KeyboardEvent) => void
+  keyUp: (e: KeyboardEvent) => void
+}
 
-export type KeyType = 'up' | 'right' | 'down' | 'left' | 'space' | 'r' | 'p'
+export type KeyType = 'arrowUp' | 'arrowRight' | 'arrowDown' | 'arrowLeft' | 'space' | 'r' | 'p'

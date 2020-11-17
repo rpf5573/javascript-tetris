@@ -82,7 +82,7 @@ const StorageKey: string = 'REACT_TETRIS';
 const maxPoint: number = 999999;
 const eachLines: number = 20;
 const keyCodeWithType: {[key: number]: KeyType;} = {
-  37: 'left', 38: 'up', 39: 'right', 40: 'down',
+  37: 'arrowLeft', 38: 'arrowUp', 39: 'arrowRight', 40: 'arrowDown',
   32: 'space', 82: 'r', 80: 'p',
 }
 const keyCodes = Object.keys(keyCodeWithType).map(e => parseInt(e, 10));
