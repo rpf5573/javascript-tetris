@@ -11,6 +11,7 @@ export type BlockType = 'I' | 'L' | 'J' | 'Z' | 'S' | 'O' | 'T'
 export type YX = [number, number]
 export interface BlockOption {
   type: BlockType;
+  shape: Shape,
   rotateIndex: number;
   timeStamp: number;
   yx: YX;

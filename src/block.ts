@@ -1,4 +1,4 @@
-import { blockShapes } from './const';
+import { blockShapes, blockTypes, yxRotateOrigin } from './const';
 import {BlockOption, BlockType, Shape, YX} from './types';
 class Block implements BlockOption {
   type: BlockType;
@@ -8,17 +8,40 @@ class Block implements BlockOption {
   yx: YX;
   constructor(options: BlockOption) {
     this.type = options.type;
-    this.shape = blockShapes[this.type]
+    this.shape = options.shape;
     this.rotateIndex = options.rotateIndex;
     this.timeStamp = options.timeStamp;
     this.yx = options.yx;
   }
   rotate = () => {
     const shape = this.shape;
+    let nextShape: Array<number[]> = [];
+    shape.forEach((line, row) => {
+      line.forEach((blockState, col) => {
+        const rowIndex = line.length - col - 1;
+        if (nextShape[rowIndex] == undefined) {
+          nextShape[rowIndex] = []; // javascript는 이런것도 되네;; 뭐랄까 좋으면서도 불안하구먼
+        }
+        nextShape[rowIndex].push(blockState);
+      });
+    });
+    const nextYX: [number, number] = [
+      this.yx[0] + yxRotateOrigin[this.type][this.rotateIndex][0],
+      this.yx[1] + yxRotateOrigin[this.type][this.rotateIndex][1]
+    ]
+    const nextRotateIndex = this.rotateIndex + 1 >= yxRotateOrigin[this.type].length ? 0 : this.rotateIndex + 1
+    return new Block({
+      type: this.type,
+      shape: nextShape,
+      yx: nextYX,
+      rotateIndex: nextRotateIndex,
+      timeStamp: Date.now()
+    });
   }
   fall = (n = 1): Block => {
     return new Block({
       type: this.type,
+      shape: this.shape,
       yx: [this.yx[0] + n, this.yx[1]],
       rotateIndex: this.rotateIndex,
       timeStamp: Date.now()
@@ -27,6 +50,7 @@ class Block implements BlockOption {
   right = () => {
     return new Block({
       type: this.type,
+      shape: this.shape,
       yx: [this.yx[0], this.yx[1]+1],
       rotateIndex: this.rotateIndex,
       timeStamp: Date.now()
@@ -35,6 +59,7 @@ class Block implements BlockOption {
   left = () => {
     return new Block({
       type: this.type,
+      shape: this.shape,
       yx: [this.yx[0], this.yx[1]-1],
       rotateIndex: this.rotateIndex,
       timeStamp: Date.now()

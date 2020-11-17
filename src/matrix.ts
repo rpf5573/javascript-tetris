@@ -39,9 +39,7 @@ class Matrix {
     const gs = window.gameState;
     const matrix = gs.matrixState;
     clearTimeout(this.timer);
-    gs.lock = true;
     setTimeout(() => {
-      gs.lock = false;
       gs.currentBlock = getNextBlock();
       this.autoDown();
     }, 100);
@@ -74,6 +72,14 @@ class Matrix {
       });
       this.matrixNode.appendChild(lineNode);
     });
+  }
+  lock = () => {
+    const gs = window.gameState;
+    gs.lock = true;
+  }
+  unlock = () => {
+    const gs = window.gameState;
+    gs.lock = false;
   }
 }
 

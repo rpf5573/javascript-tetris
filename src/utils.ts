@@ -1,5 +1,5 @@
 import Block from './block';
-import { blockTypes, yxStartPosition } from './const';
+import { blockTypes, yxStartPosition, blockShapes } from './const';
 import { MatrixState, Line, BlockType } from './types';
 
 const getStartMatrix = () => {}
@@ -16,6 +16,7 @@ const getNextBlock = (): Block => {
   const randomType = typeArr[Math.floor(Math.random() * typeArr.length)] as BlockType;
   return new Block({
     type: randomType,
+    shape: blockShapes[randomType],
     rotateIndex: 0,
     timeStamp: Date.now(),
     yx: yxStartPosition[randomType]
@@ -23,6 +24,7 @@ const getNextBlock = (): Block => {
 }
 const tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
   const yx = nextBlock.yx;
+  console.log("yx : ", yx);
   const shape = nextBlock.shape;
   const width = shape[0].length;
   return shape.every((line, i) => (
@@ -35,7 +37,6 @@ const tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
         const y = yx[0] + i;
         const x = yx[1] + j;
         if (matrixState[y][x] == 1) { return false; }
-        return true;
       }
       return true;
     })
