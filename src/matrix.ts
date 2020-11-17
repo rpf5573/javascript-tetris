@@ -1,5 +1,5 @@
 import Block from './block';
-import { blankMatrix, blockShapes } from './const';
+import { speeds } from './const';
 import { MatrixState, Line } from './types';
 import { deepCopy, getNextBlock } from './utils';
 
@@ -25,7 +25,7 @@ class Matrix {
       if (this.tryMove(gs.matrixState, nextBlock)) {
         this.render(this.addBlock(gs.matrixState, nextBlock)); // 핵심은 여기서 update 된 matrix를 gameState.matrixState 에 넣지 않는다는거~
         gs.currentBlock = nextBlock;
-        this.timer = setTimeout(fall, 1000);
+        this.timer = setTimeout(fall, speeds[gs.speed]);
       } else {
         // 다음 블럭이 못가면, 현재 블럭을 matrixState에 고정(?) 시킨다
         gs.matrixState = this.addBlock(gs.matrixState, currentBlock);
@@ -33,7 +33,7 @@ class Matrix {
       }
     }
     clearTimeout(this.timer);
-    this.timer = setTimeout(fall, 1000);
+    this.timer = setTimeout(fall, speeds[gs.speed]);
   }
   nextAround = () => {
     const gs = window.gameState;
