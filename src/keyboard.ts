@@ -1,4 +1,5 @@
 import { EvalSourceMapDevToolPlugin } from 'webpack';
+import Matrix from './matrix';
 import {keyCodeWithType, keyCodes} from './const';
 import { KeyType, KeyControl } from './types';
 import ArrowUp from './keys/arrowUp';
@@ -10,14 +11,15 @@ import P from './keys/p';
 import R from './keys/r';
 
 class Keyboard implements KeyControl {
-  arrowUp = new ArrowUp();
-  arrowRight = new ArrowRight();
-  arrowDown = new ArrowDown();
-  arrowLeft = new ArrowLeft();
-  space = new Space();
-  p = new P();
-  r = new R();
-  constructor() {
+  arrowUp: ArrowUp;
+  arrowRight: ArrowRight;
+  arrowDown: ArrowDown;
+  arrowLeft: ArrowLeft;
+  space: Space;
+  p: P;
+  r: R;
+  constructor(matrix: Matrix) {
+    this.arrowUp = new ArrowUp(matrix);
     document.addEventListener("keydown", this.keyDown);
     document.addEventListener("keyup", this.keyUp);
   }

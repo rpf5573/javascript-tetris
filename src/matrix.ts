@@ -1,7 +1,7 @@
 import Block from './block';
 import { speeds } from './const';
 import { MatrixState, Line } from './types';
-import { deepCopy, getNextBlock } from './utils';
+import { deepCopy, getNextBlock, tryMove } from './utils';
 
 class Matrix {
   matrixNode: HTMLDivElement;
@@ -22,7 +22,7 @@ class Matrix {
       gs = window.gameState;
       currentBlock = gs.currentBlock;
       const nextBlock = currentBlock.fall();
-      if (this.tryMove(gs.matrixState, nextBlock)) {
+      if (tryMove(gs.matrixState, nextBlock)) {
         this.render(this.addBlock(gs.matrixState, nextBlock)); // 핵심은 여기서 update 된 matrix를 gameState.matrixState 에 넣지 않는다는거~
         gs.currentBlock = nextBlock;
         this.timer = setTimeout(fall, speeds[gs.speed]);
@@ -45,26 +45,6 @@ class Matrix {
       gs.currentBlock = getNextBlock();
       this.autoDown();
     }, 100);
-  }
-  tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
-    const yx = nextBlock.yx;
-    const shape = nextBlock.shape;
-    const width = shape[0].length;
-    return shape.every((line, i) => (
-      line.every((blockState, j) => {
-        if (yx[1] < 0) { return false; } // left
-        if (yx[1] + width > 10) { return false; } // right
-        if (yx[0] + i < 0) { return true; } // top 위로 넘어가는건 ㄱㅊ아
-        if (yx[0] + i >= 20) { return false; } // bottom
-        if (blockState === 1) {
-          const y = yx[0] + i;
-          const x = yx[1] + j;
-          if (matrixState[y][x] == 1) { return false; }
-          return true;
-        }
-        return true;
-      })
-    ));
   }
   addBlock = (matrixState: MatrixState, block: Block): MatrixState => {
     const {yx, shape} = block;

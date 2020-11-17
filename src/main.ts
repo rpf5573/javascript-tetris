@@ -43,6 +43,7 @@ window.gameState = {
   point: 0,
   lock: false
 }
-const keyboard = new Keyboard();
+
 const matrix = new Matrix();
 matrix.autoDown();
+const keyboard = new Keyboard(matrix);

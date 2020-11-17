@@ -24,8 +24,22 @@ class Block implements BlockOption {
       timeStamp: Date.now()
     });
   }
-  right = () => {}
-  left = () => {}
+  right = () => {
+    return new Block({
+      type: this.type,
+      yx: [this.yx[0], this.yx[1]+1],
+      rotateIndex: this.rotateIndex,
+      timeStamp: Date.now()
+    });
+  }
+  left = () => {
+    return new Block({
+      type: this.type,
+      yx: [this.yx[0], this.yx[1]-1],
+      rotateIndex: this.rotateIndex,
+      timeStamp: Date.now()
+    });
+  }
 }
 
 export default Block
