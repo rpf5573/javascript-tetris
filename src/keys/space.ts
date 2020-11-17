@@ -15,16 +15,12 @@ export default class Space implements KeyControl {
         break
       }
     }
-    const nextMatrixState = this.matrix.addBlock(gs.matrixState, bottom);
-    this.matrix.render(nextMatrixState);
-    /**
-     * drop은 바로 고정시켜버린다
-     * 그래서 잠깐동안 lock을 시켜버리자
-     */
     this.matrix.lock();
     gs.currentBlock = bottom;
-    gs.matrixState = nextMatrixState;
-    setTimeout(this.matrix.unlock, gs.speed);
+    gs.matrixState = this.matrix.addBlock(gs.matrixState, gs.currentBlock);
+    this.matrix.render(gs.matrixState);
+    this.matrix.nextAround();
+    setTimeout(this.matrix.unlock, gs.speed/2);
   }
   keyUp = (e: KeyboardEvent) => {}
 }

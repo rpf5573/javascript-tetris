@@ -39,11 +39,10 @@ window.addEventListener('resize', resize);
 window.gameState = {
   currentBlock: getNextBlock(),
   matrixState: blankMatrix,
-  speed: 0,
+  speed: 600,
   point: 0,
   lock: false
 }
 
 const matrix = new Matrix();
-matrix.autoDown();
 const keyboard = new Keyboard(matrix);

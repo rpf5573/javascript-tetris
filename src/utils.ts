@@ -13,7 +13,8 @@ const deepCopy = (matrixState: MatrixState): MatrixState => {
 }
 const getNextBlock = (): Block => {
   const typeArr = Object.keys(blockTypes);
-  const randomType = typeArr[Math.floor(Math.random() * typeArr.length)] as BlockType;
+  const randomIndex = Math.floor(Math.random() * typeArr.length);
+  const randomType = typeArr[randomIndex] as BlockType;
   return new Block({
     type: randomType,
     shape: blockShapes[randomType],
@@ -24,7 +25,6 @@ const getNextBlock = (): Block => {
 }
 const tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
   const yx = nextBlock.yx;
-  console.log("yx : ", yx);
   const shape = nextBlock.shape;
   const width = shape[0].length;
   return shape.every((line, i) => (

@@ -30,7 +30,6 @@ class Keyboard implements KeyControl {
     document.addEventListener("keyup", this.keyUp);
   }
   keyDown = (e: KeyboardEvent) => {
-    console.log("key down");
     const gs = window.gameState;
     // 잠겨있으면 이벤트를 받지 않는다.
     if (gs.lock === true) { return; }

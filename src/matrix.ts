@@ -9,23 +9,23 @@ class Matrix {
   timer: NodeJS.Timeout;
   constructor() {
     this.matrixNode = document.querySelector(".game-screen > .matrix");
-    this.render(window.gameState.matrixState);
+    const gs = window.gameState;
+    this.render(this.addBlock(gs.matrixState, gs.currentBlock));
+    this.autoDown();
   }
   removeChildren = (parentNode: HTMLDivElement) => {
     let child: ChildNode = null;
     while(child = parentNode.lastChild) { parentNode.removeChild(child); }
   }
   autoDown = () => {
-    let gs = window.gameState;
-    let currentBlock = gs.currentBlock;
+    const gs = window.gameState;
     const fall = () => {
-      gs = window.gameState;
-      currentBlock = gs.currentBlock;
+      let currentBlock = gs.currentBlock;
       const nextBlock = currentBlock.fall();
       if (tryMove(gs.matrixState, nextBlock)) {
         this.render(this.addBlock(gs.matrixState, nextBlock)); // 핵심은 여기서 update 된 matrix를 gameState.matrixState 에 넣지 않는다는거~
         gs.currentBlock = nextBlock;
-        this.timer = setTimeout(fall, speeds[gs.speed]);
+        this.timer = setTimeout(fall, gs.speed);
       } else {
         // 다음 블럭이 못가면, 현재 블럭을 matrixState에 고정(?) 시킨다
         gs.matrixState = this.addBlock(gs.matrixState, currentBlock);
@@ -33,14 +33,14 @@ class Matrix {
       }
     }
     clearTimeout(this.timer);
-    this.timer = setTimeout(fall, speeds[gs.speed]);
+    this.timer = setTimeout(fall, gs.speed);
   }
   nextAround = () => {
     const gs = window.gameState;
-    const matrix = gs.matrixState;
     clearTimeout(this.timer);
     setTimeout(() => {
       gs.currentBlock = getNextBlock();
+      this.render(this.addBlock(gs.matrixState, gs.currentBlock));
       this.autoDown();
     }, 100);
   }
