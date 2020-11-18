@@ -1,7 +1,7 @@
 import Block from './block';
 import { speeds } from './const';
 import { MatrixState, Line } from './types';
-import { deepCopy, getNextBlock, tryMove } from './utils';
+import { deepCopy, getNextBlock, tryMove, getClearLines } from './utils';
 
 class Matrix {
   matrixNode: HTMLDivElement;
@@ -20,6 +20,10 @@ class Matrix {
   autoDown = () => {
     const gs = window.gameState;
     const fall = () => {
+      if (gs.lock == true) {
+        this.timer = setTimeout(fall, gs.speed);
+        return
+      }
       let currentBlock = gs.currentBlock;
       const nextBlock = currentBlock.fall();
       if (tryMove(gs.matrixState, nextBlock)) {
@@ -38,6 +42,12 @@ class Matrix {
   nextAround = () => {
     const gs = window.gameState;
     clearTimeout(this.timer);
+    const clearLines = getClearLines();
+    if (clearLines.length > 0) {
+      this.lock();
+
+      return
+    }
     setTimeout(() => {
       gs.currentBlock = getNextBlock();
       this.render(this.addBlock(gs.matrixState, gs.currentBlock));
@@ -80,6 +90,11 @@ class Matrix {
   unlock = () => {
     const gs = window.gameState;
     gs.lock = false;
+  }
+  clearLines = (lines: number[]) => {
+  }
+  animateLines = (lines: number[], callback:(lis: number[])) => {
+
   }
 }
 

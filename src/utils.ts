@@ -3,7 +3,14 @@ import { blockTypes, yxStartPosition, blockShapes } from './const';
 import { MatrixState, Line, BlockType } from './types';
 
 const getStartMatrix = () => {}
-const isClear = () => {}
+const getClearLines = (): number[] => {
+  const gs = window.gameState;
+  const clearLines: number[] = [];
+  gs.matrixState.forEach((line, i) => {
+    if (line.every(n => !!n)) { clearLines.push(i); }
+  });
+  return clearLines;
+}
 const isOver = () => {}
 const isFocus = () => {}
 const deepCopy = (matrixState: MatrixState): MatrixState => {
@@ -43,4 +50,4 @@ const tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
   ));
 }
 
-export {getStartMatrix, isClear, isOver, isFocus, deepCopy, getNextBlock, tryMove}
+export {getStartMatrix, getClearLines, isOver, isFocus, deepCopy, getNextBlock, tryMove}
