@@ -1,5 +1,5 @@
 import Block from './block';
-import { speeds } from './const';
+import { speeds, blankLine } from './const';
 import { MatrixState, Line } from './types';
 import { deepCopy, getNextBlock, tryMove, getClearLines } from './utils';
 
@@ -42,10 +42,10 @@ class Matrix {
   nextAround = () => {
     const gs = window.gameState;
     clearTimeout(this.timer);
-    const clearLines = getClearLines();
-    if (clearLines.length > 0) {
+    const lines = getClearLines();
+    if (lines.length > 0) {
       this.lock();
-
+      this.clearLines(lines);
       return
     }
     setTimeout(() => {
@@ -69,7 +69,8 @@ class Matrix {
     });
     return newMatrixState;
   }
-  render = (matrixState: MatrixState) => {
+  render = (matrixState?: MatrixState) => {
+    if (matrixState == undefined) { matrixState = window.gameState.matrixState; }
     this.removeChildren(this.matrixNode); // 비우고 시작하자
     matrixState.forEach((line: Line) => {
       const lineNode = document.createElement("div");
@@ -77,7 +78,8 @@ class Matrix {
       line.forEach(blockState => {
         const blockNode = document.createElement("div");
         blockNode.className = 'b';
-        if (blockState === 1) { blockNode.classList.add("active") }
+        if (blockState === 1) { blockNode.classList.add("active"); }
+        else if (blockState === 2) { blockNode.classList.add("blink"); }
         lineNode.appendChild(blockNode);
       });
       this.matrixNode.appendChild(lineNode);
@@ -92,9 +94,40 @@ class Matrix {
     gs.lock = false;
   }
   clearLines = (lines: number[]) => {
+    this.animateLines(lines, () => {
+      let newMatrix = deepCopy(window.gameState.matrixState);
+      lines.forEach(n => {
+        newMatrix.splice(n, 1);
+        newMatrix.unshift(blankLine);
+      });
+      window.gameState.matrixState = newMatrix;
+      this.render();
+      this.autoDown();
+    });
   }
-  animateLines = (lines: number[], callback:(lis: number[])) => {
-
+  animateLines = (lines: number[], callback:()=>void) => {
+    this.lock();
+    this.render(this.setLine(lines, 2));
+    setTimeout(() => {
+      this.render(this.setLine(lines, 0));
+      setTimeout(() => {
+        this.render(this.setLine(lines, 2));
+        setTimeout(() => {
+          this.render(this.setLine(lines, 0));
+          this.unlock();
+          callback();
+        }, 100);
+      }, 100);
+    }, 100);
+  }
+  setLine = (lines: number[], blockState: number) => {
+    const gs = window.gameState;
+    const matrix = deepCopy(gs.matrixState);
+    lines.forEach(i => {
+      const newLine = Array(10).fill(blockState);
+      matrix[i] = newLine;
+    });
+    return matrix;
   }
 }
 

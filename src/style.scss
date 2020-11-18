@@ -85,6 +85,11 @@ $wholeHeight: $screenHeight;
             background: black;
           }
         }
+        &.blink {
+          &:after {
+            background: #560000;
+          }
+        }
       }
     }
   }
