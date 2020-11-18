@@ -11,7 +11,10 @@ const getClearLines = (): number[] => {
   });
   return clearLines;
 }
-const isOver = () => {}
+const isOver = (): boolean => {
+  const gs = window.gameState;
+  return gs.matrixState[0].some((blockState)=> { return !!blockState })
+}
 const isFocus = () => {}
 const deepCopy = (matrixState: MatrixState): MatrixState => {
   const newMatrixState: MatrixState = [];

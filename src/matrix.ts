@@ -1,7 +1,7 @@
 import Block from './block';
-import { speeds, blankLine } from './const';
+import { blankLine, blankMatrix } from './const';
 import { MatrixState, Line } from './types';
-import { deepCopy, getNextBlock, tryMove, getClearLines } from './utils';
+import { deepCopy, getNextBlock, tryMove, getClearLines, isOver } from './utils';
 
 class Matrix {
   matrixNode: HTMLDivElement;
@@ -18,6 +18,7 @@ class Matrix {
     while(child = parentNode.lastChild) { parentNode.removeChild(child); }
   }
   autoDown = () => {
+    console.log("autoDown is called");
     const gs = window.gameState;
     const fall = () => {
       if (gs.lock == true) {
@@ -44,8 +45,11 @@ class Matrix {
     clearTimeout(this.timer);
     const lines = getClearLines();
     if (lines.length > 0) {
-      this.lock();
       this.clearLines(lines);
+      return
+    }
+    if (isOver()) {
+      this.reset();
       return
     }
     setTimeout(() => {
@@ -69,6 +73,66 @@ class Matrix {
     });
     return newMatrixState;
   }
+  lock = () => {
+    const gs = window.gameState;
+    gs.lock = true;
+  }
+  unlock = () => {
+    const gs = window.gameState;
+    gs.lock = false;
+  }
+  clearLines = (lines: number[]) => {
+    this.lock(); // 잠그고
+    this.animateLines(lines, () => {
+      let newMatrix = deepCopy(window.gameState.matrixState);
+      lines.forEach(n => {
+        newMatrix.splice(n, 1);
+        newMatrix.unshift(blankLine);
+      });
+      window.gameState.matrixState = newMatrix;
+      this.render();
+      this.unlock(); // 풀어준다
+      this.nextAround();
+    });
+  }
+  animateLines = (lines: number[], callback:()=>void) => {
+    this.render(this.setLine(lines, 2));
+    setTimeout(() => {
+      this.render(this.setLine(lines, 0));
+      setTimeout(() => {
+        this.render(this.setLine(lines, 2));
+        setTimeout(() => {
+          this.render(this.setLine(lines, 0));
+          callback();
+        }, 150);
+      }, 150);
+    }, 150);
+  }
+  setLine = (lines: number[], blockState: number) => {
+    const gs = window.gameState;
+    const matrix = deepCopy(gs.matrixState);
+    lines.forEach(i => {
+      const newLine = Array(10).fill(blockState);
+      matrix[i] = newLine;
+    });
+    return matrix;
+  }
+  reset = () => {
+    this.lock();
+    const gs = window.gameState;
+    for(let i = gs.matrixState.length-1; i > -1; i--) {
+      const up = (t: number) => {
+        setTimeout(() => {
+          gs.matrixState[t] = Array(gs.matrixState[t].length).fill(1);
+          this.render();
+          if (t == 0) {
+            
+          }
+        }, t*200);
+      }
+      okok(i);
+    }
+  }
   render = (matrixState?: MatrixState) => {
     if (matrixState == undefined) { matrixState = window.gameState.matrixState; }
     this.removeChildren(this.matrixNode); // 비우고 시작하자
@@ -84,50 +148,6 @@ class Matrix {
       });
       this.matrixNode.appendChild(lineNode);
     });
-  }
-  lock = () => {
-    const gs = window.gameState;
-    gs.lock = true;
-  }
-  unlock = () => {
-    const gs = window.gameState;
-    gs.lock = false;
-  }
-  clearLines = (lines: number[]) => {
-    this.animateLines(lines, () => {
-      let newMatrix = deepCopy(window.gameState.matrixState);
-      lines.forEach(n => {
-        newMatrix.splice(n, 1);
-        newMatrix.unshift(blankLine);
-      });
-      window.gameState.matrixState = newMatrix;
-      this.render();
-      this.autoDown();
-    });
-  }
-  animateLines = (lines: number[], callback:()=>void) => {
-    this.lock();
-    this.render(this.setLine(lines, 2));
-    setTimeout(() => {
-      this.render(this.setLine(lines, 0));
-      setTimeout(() => {
-        this.render(this.setLine(lines, 2));
-        setTimeout(() => {
-          this.render(this.setLine(lines, 0));
-          this.unlock();
-          callback();
-        }, 100);
-      }, 100);
-    }, 100);
-  }
-  setLine = (lines: number[], blockState: number) => {
-    const gs = window.gameState;
-    const matrix = deepCopy(gs.matrixState);
-    lines.forEach(i => {
-      const newLine = Array(10).fill(blockState);
-      matrix[i] = newLine;
-    });
-    return matrix;
   }
 }
 
