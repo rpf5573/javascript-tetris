@@ -11,7 +11,6 @@ class Matrix {
     this.matrixNode = document.querySelector(".game-screen > .matrix");
     const gs = window.gameState;
     this.render(this.addBlock(gs.matrixState, gs.currentBlock));
-    this.autoDown();
   }
   removeChildren = (parentNode: HTMLDivElement) => {
     let child: ChildNode = null;
@@ -73,14 +72,6 @@ class Matrix {
     });
     return newMatrixState;
   }
-  lock = () => {
-    const gs = window.gameState;
-    gs.lock = true;
-  }
-  unlock = () => {
-    const gs = window.gameState;
-    gs.lock = false;
-  }
   clearLines = (lines: number[]) => {
     this.lock(); // 잠그고
     this.animateLines(lines, () => {
@@ -116,22 +107,6 @@ class Matrix {
       matrix[i] = newLine;
     });
     return matrix;
-  }
-  reset = () => {
-    this.lock();
-    const gs = window.gameState;
-    for(let i = gs.matrixState.length-1; i > -1; i--) {
-      const up = (t: number) => {
-        setTimeout(() => {
-          gs.matrixState[t] = Array(gs.matrixState[t].length).fill(1);
-          this.render();
-          if (t == 0) {
-            
-          }
-        }, t*200);
-      }
-      okok(i);
-    }
   }
   render = (matrixState?: MatrixState) => {
     if (matrixState == undefined) { matrixState = window.gameState.matrixState; }
