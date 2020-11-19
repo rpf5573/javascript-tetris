@@ -1,41 +1,34 @@
-import {getNextBlock, deepCopy} from './utils';
+import {getNextBlock, deepCopy, getClearLines, isOver} from './utils';
 import {blankMatrix} from './const';
 import Matrix from './matrix';
 
 class StateManager {
-  matrix: Matrix;
-  constructor(matrix: Matrix) { this.matrix = matrix }
+  constructor() {}
   lock = () => {
-    const gs = window.gameState;
+    const gs = window.tetris.states;
     gs.lock = true;
   }
   unlock = () => {
-    const gs = window.gameState;
+    const gs = window.tetris.states;
     gs.lock = false;
   }
   start = () => {
-    window.gameState = {
-      currentBlock: getNextBlock(),
-      matrixState: blankMatrix,
-      speed: 600,
-      point: 0,
-      lock: false
-    }
-    this.matrix.autoDown();
+    window.tetris.matrix.autoDown();
   }
   reset = () => {
     this.lock();
-    const gs = window.gameState;
+    const gs = window.tetris.states;
+    const matrix = window.tetris.matrix;
     const animateLine = (index: number) => {
       const len = 10
       if (index < 20) {
         const i = 20 - (index + 1)
         gs.matrixState[i] = Array(len).fill(1);
-        this.matrix.render();
+        matrix.render();
       } else if (index < 40) {
         const i = index - 20;
         gs.matrixState[i] = Array(len).fill(0);
-        this.matrix.render();
+        matrix.render();
       } 
       // 마지막에 index가 40이라면, 즉 다 끝났다면!
       else {
@@ -48,10 +41,30 @@ class StateManager {
     }
   }
   overEnd = () => {
-    const gs = window.gameState;
-    clearTimeout(this.matrix.timer);
+    const gs = window.tetris.states;
+    const matrix = window.tetris.matrix;
+    clearTimeout(matrix.timer);
     gs.matrixState = deepCopy(blankMatrix);
-    this.matrix.render();
+    matrix.render();
+  }
+  nextAround = () => {
+    const gs = window.tetris.states;
+    const matrix = window.tetris.matrix;
+    clearTimeout(matrix.timer);
+    const lines = getClearLines();
+    if (lines.length > 0) {
+      matrix.clearLines(lines);
+      return
+    }
+    if (isOver()) {
+      this.reset();
+      return
+    }
+    setTimeout(() => {
+      gs.currentBlock = getNextBlock();
+      matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
+      matrix.autoDown();
+    }, 100);
   }
 }
 

@@ -31,7 +31,7 @@ const resize = () => {
 }
 const getStartMatrix = () => {}
 const getClearLines = (): number[] => {
-  const gs = window.gameState;
+  const gs = window.tetris.states;
   const clearLines: number[] = [];
   gs.matrixState.forEach((line, i) => {
     if (line.every(n => !!n)) { clearLines.push(i); }
@@ -39,7 +39,7 @@ const getClearLines = (): number[] => {
   return clearLines;
 }
 const isOver = (): boolean => {
-  const gs = window.gameState;
+  const gs = window.tetris.states;
   return gs.matrixState[0].some((blockState)=> { return !!blockState })
 }
 const isFocus = () => {}

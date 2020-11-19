@@ -9,6 +9,16 @@ import StateManager from './stateManager';
 resize();
 window.addEventListener('resize', resize);
 
-const matrix = new Matrix();
-const keyboard = new Keyboard(matrix);
-StateManager.start(matrix);
+window.tetris = {
+  states: {
+    currentBlock: getNextBlock(),
+    matrixState: blankMatrix,
+    speed: 600,
+    point: 0,
+    lock: false
+  },
+  matrix: new Matrix(),
+  keyboard: new Keyboard(),
+  stateManager: new StateManager()
+}
+window.tetris.stateManager.start();

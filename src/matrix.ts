@@ -9,7 +9,7 @@ class Matrix {
   timer: NodeJS.Timeout;
   constructor() {
     this.matrixNode = document.querySelector(".game-screen > .matrix");
-    const gs = window.gameState;
+    const gs = window.tetris.states;
     this.render(this.addBlock(gs.matrixState, gs.currentBlock));
   }
   removeChildren = (parentNode: HTMLDivElement) => {
@@ -18,7 +18,7 @@ class Matrix {
   }
   autoDown = () => {
     console.log("autoDown is called");
-    const gs = window.gameState;
+    const gs = window.tetris.states;
     const fall = () => {
       if (gs.lock == true) {
         this.timer = setTimeout(fall, gs.speed);
@@ -39,24 +39,6 @@ class Matrix {
     clearTimeout(this.timer);
     this.timer = setTimeout(fall, gs.speed);
   }
-  nextAround = () => {
-    const gs = window.gameState;
-    clearTimeout(this.timer);
-    const lines = getClearLines();
-    if (lines.length > 0) {
-      this.clearLines(lines);
-      return
-    }
-    if (isOver()) {
-      this.reset();
-      return
-    }
-    setTimeout(() => {
-      gs.currentBlock = getNextBlock();
-      this.render(this.addBlock(gs.matrixState, gs.currentBlock));
-      this.autoDown();
-    }, 100);
-  }
   addBlock = (matrixState: MatrixState, block: Block): MatrixState => {
     const {yx, shape} = block;
     const newMatrixState = deepCopy(matrixState);
@@ -75,12 +57,12 @@ class Matrix {
   clearLines = (lines: number[]) => {
     this.lock(); // 잠그고
     this.animateLines(lines, () => {
-      let newMatrix = deepCopy(window.gameState.matrixState);
+      let newMatrix = deepCopy(window.tetris.states.matrixState);
       lines.forEach(n => {
         newMatrix.splice(n, 1);
         newMatrix.unshift(blankLine);
       });
-      window.gameState.matrixState = newMatrix;
+      window.tetris.states.matrixState = newMatrix;
       this.render();
       this.unlock(); // 풀어준다
       this.nextAround();
@@ -100,7 +82,7 @@ class Matrix {
     }, 150);
   }
   setLine = (lines: number[], blockState: number) => {
-    const gs = window.gameState;
+    const gs = window.tetris.states;
     const matrix = deepCopy(gs.matrixState);
     lines.forEach(i => {
       const newLine = Array(10).fill(blockState);
@@ -109,7 +91,7 @@ class Matrix {
     return matrix;
   }
   render = (matrixState?: MatrixState) => {
-    if (matrixState == undefined) { matrixState = window.gameState.matrixState; }
+    if (matrixState == undefined) { matrixState = window.tetris.states.matrixState; }
     this.removeChildren(this.matrixNode); // 비우고 시작하자
     matrixState.forEach((line: Line) => {
       const lineNode = document.createElement("div");

@@ -3,14 +3,14 @@ import { tryMove } from '../utils';
 import { KeyType, KeyControl } from '../types';
 
 export default class ArrowUp implements KeyControl {
-  matrix: Matrix;
-  constructor(matrix: Matrix) { this.matrix = matrix; }
+  constructor() {  }
   keyDown = (e: KeyboardEvent) => {
-    const gs = window.gameState
+    const gs = window.tetris.states
+    const matrix = window.tetris.matrix;
     const nextBlock = gs.currentBlock.rotate();
     if (tryMove(gs.matrixState, nextBlock)) {
-      const nextMatrixState = this.matrix.addBlock(gs.matrixState, nextBlock);
-      this.matrix.render(nextMatrixState);
+      const nextMatrixState = matrix.addBlock(gs.matrixState, nextBlock);
+      matrix.render(nextMatrixState);
       gs.currentBlock = nextBlock;
     }
   }

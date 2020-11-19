@@ -3,10 +3,11 @@ import { tryMove } from '../utils';
 import Matrix from '../matrix';
 
 export default class Space implements KeyControl {
-  matrix: Matrix;
-  constructor(matrix: Matrix) { this.matrix = matrix; }
+  constructor() {  }
   keyDown = (e: KeyboardEvent) => {
-    const gs = window.gameState;
+    const gs = window.tetris.states;
+    const stateManager = window.tetris.stateManager;
+    const matrix = window.tetris.matrix;
     let bottom = gs.currentBlock;
     for(var n = 1; n < 20; n++) {
       bottom = gs.currentBlock.fall(n);
@@ -15,12 +16,12 @@ export default class Space implements KeyControl {
         break
       }
     }
-    this.matrix.lock();
+    stateManager.lock();
     gs.currentBlock = bottom;
-    gs.matrixState = this.matrix.addBlock(gs.matrixState, gs.currentBlock);
-    this.matrix.render(gs.matrixState);
-    this.matrix.nextAround();
-    setTimeout(this.matrix.unlock, gs.speed/2);
+    gs.matrixState = matrix.addBlock(gs.matrixState, gs.currentBlock);
+    matrix.render(gs.matrixState);
+    stateManager.nextAround();
+    setTimeout(stateManager.unlock, gs.speed/2);
   }
   keyUp = (e: KeyboardEvent) => {}
 }

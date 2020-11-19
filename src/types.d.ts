@@ -1,4 +1,7 @@
 import Block from './block';
+import Keyboard from './keyboard';
+import Matrix from './matrix';
+import StateManager from './stateManager';
 
 export type Shape = Array<Array<number>>
 export type Dyx = Array<Array<number>>
@@ -16,16 +19,21 @@ export interface BlockOption {
   timeStamp: number;
   yx: YX;
 }
-export type GameState = {
-  currentBlock: Block | null,
-  matrixState: MatrixState,
-  speed: number,
-  point: number,
-  lock: boolean
+export type Tetris = {
+  states: {
+    currentBlock: Block | null,
+    matrixState: MatrixState,
+    speed: number,
+    point: number,
+    lock: boolean
+  },
+  matrix: Matrix,
+  keyboard: Keyboard,
+  stateManager: StateManager
 }
 declare global {
   interface Window {
-    gameState: GameState;
+    tetris: Tetris
   }
 }
 export interface KeyControl {
