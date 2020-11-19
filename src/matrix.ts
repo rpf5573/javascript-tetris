@@ -9,16 +9,14 @@ class Matrix {
   timer: NodeJS.Timeout;
   constructor() {
     this.matrixNode = document.querySelector(".game-screen > .matrix");
-    const gs = window.tetris.states;
-    this.render(this.addBlock(gs.matrixState, gs.currentBlock));
   }
   removeChildren = (parentNode: HTMLDivElement) => {
     let child: ChildNode = null;
     while(child = parentNode.lastChild) { parentNode.removeChild(child); }
   }
   autoDown = () => {
-    console.log("autoDown is called");
     const gs = window.tetris.states;
+    const stateManager = window.tetris.stateManager;
     const fall = () => {
       if (gs.lock == true) {
         this.timer = setTimeout(fall, gs.speed);
@@ -33,7 +31,7 @@ class Matrix {
       } else {
         // 다음 블럭이 못가면, 현재 블럭을 matrixState에 고정(?) 시킨다
         gs.matrixState = this.addBlock(gs.matrixState, currentBlock);
-        this.nextAround();
+        stateManager.nextAround();
       }
     }
     clearTimeout(this.timer);
@@ -55,7 +53,8 @@ class Matrix {
     return newMatrixState;
   }
   clearLines = (lines: number[]) => {
-    this.lock(); // 잠그고
+    const stateManager = window.tetris.stateManager;
+    stateManager.lock(); // 잠그고
     this.animateLines(lines, () => {
       let newMatrix = deepCopy(window.tetris.states.matrixState);
       lines.forEach(n => {
@@ -64,8 +63,8 @@ class Matrix {
       });
       window.tetris.states.matrixState = newMatrix;
       this.render();
-      this.unlock(); // 풀어준다
-      this.nextAround();
+      stateManager.unlock(); // 풀어준다
+      stateManager.nextAround();
     });
   }
   animateLines = (lines: number[], callback:()=>void) => {

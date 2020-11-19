@@ -13,7 +13,10 @@ class StateManager {
     gs.lock = false;
   }
   start = () => {
-    window.tetris.matrix.autoDown();
+    const gs = window.tetris.states;
+    const matrix = window.tetris.matrix;
+    matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
+    matrix.autoDown();
   }
   reset = () => {
     this.lock();
