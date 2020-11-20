@@ -8,7 +8,6 @@ import StateManager from './stateManager';
 
 resize();
 window.addEventListener('resize', resize);
-
 window.tetris = {
   states: {
     currentBlock: getNextBlock(),
