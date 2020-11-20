@@ -1,6 +1,5 @@
 import {getNextBlock, deepCopy, getClearLines, isOver} from './utils';
 import {blankMatrix} from './const';
-import Matrix from './matrix';
 
 class StateManager {
   constructor() {}

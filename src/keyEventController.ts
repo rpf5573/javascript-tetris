@@ -1,0 +1,46 @@
+import { Tetris } from "./types";
+
+class KeyEventController {
+  events: Tetris.KeyTimer = {}
+  activeKey: Tetris.KeyType|null
+  constructor() {}
+  clearEvent = (keyType: Tetris.KeyType) => {
+    const keys = Object.keys(this.events);
+    keys.forEach((k:Tetris.KeyType) => {
+      if (k == keyType && this.events[keyType]) {
+        clearTimeout(this.events[keyType]);
+        this.events[keyType] = null;
+      }
+    });
+  }
+  down = (e: Tetris.KeyCallback) => {
+    if (this.activeKey == e.keyType) { return }
+    else { this.activeKey = e.keyType; }
+
+    this.clearEvent(e.keyType);
+    this.events[e.keyType] = null;
+
+    // undefined가 맞나?
+    if (e.callback === undefined) {return}
+
+    // 한번 실행한다
+    e.callback();
+    let begin = 100;
+    const interval = 50;
+    const loop = () => {
+      this.events[e.keyType] = setTimeout(() => {
+        begin = null;
+        e.callback();
+        loop();
+      }, begin|interval);
+    }
+    loop();
+  }
+  up = (e: Tetris.KeyCallback) => {
+    if (this.activeKey == e.keyType) { this.activeKey = null; }
+    this.clearEvent(e.keyType);
+    this.events[e.keyType] = null;
+  }
+}
+
+export default KeyEventController;

@@ -1,10 +1,7 @@
-import { KeyType, KeyControl } from '../types';
 import { tryMove } from '../utils';
-import Matrix from '../matrix';
+import { Tetris } from '../types';
 
-export default class ArrowLeft implements KeyControl {
-  timer: NodeJS.Timeout;
-  active: boolean;
+export default class ArrowLeft implements Tetris.KeyControl {
   constructor() {  }
   blockLeft = () => {
     const gs = window.tetris.states;
@@ -18,19 +15,15 @@ export default class ArrowLeft implements KeyControl {
     }
   }
   keyDown = (e: KeyboardEvent) => {
-    if (this.active === true) { return }
-    else { this.active = false }
-    clearTimeout(this.timer); // 혹시모르니까 지워주고
-    this.blockLeft();
-    let begin = 100;
-    let interval = 50;
-    const loop = () => {
-      this.timer = setTimeout(() => {
-        begin = null;
-        this.blockLeft();
-        loop();
-      }, begin|interval);
-    }
+    window.tetris.keyEventController.down({
+      keyType: e.type as Tetris.KeyType,
+      callback: this.blockLeft
+    });
   }
-  keyUp = (e: KeyboardEvent) => {}
+  keyUp = (e: KeyboardEvent) => {
+    window.tetris.keyEventController.up({
+      keyType: e.type as Tetris.KeyType,
+      callback: null
+    });
+  }
 }

@@ -1,6 +1,6 @@
 import Block from './block';
 import { blockTypes, yxStartPosition, blockShapes, width, height } from './const';
-import { MatrixState, Line, BlockType } from './types';
+import { Tetris } from './types';
 
 /* 화면 크기가 바뀔때마다 게임판의 크기도 조정한다 */
 const resize = () => {
@@ -43,15 +43,15 @@ const isOver = (): boolean => {
   return gs.matrixState[0].some((blockState)=> { return !!blockState })
 }
 const isFocus = () => {}
-const deepCopy = (matrixState: MatrixState): MatrixState => {
-  const newMatrixState: MatrixState = [];
-  matrixState.forEach((line: Line) => { newMatrixState.push([...line]); });
+const deepCopy = (matrixState: Tetris.MatrixState): Tetris.MatrixState => {
+  const newMatrixState: Tetris.MatrixState = [];
+  matrixState.forEach((line: Tetris.Line) => { newMatrixState.push([...line]); });
   return newMatrixState;
 }
 const getNextBlock = (): Block => {
   const typeArr = Object.keys(blockTypes);
   const randomIndex = Math.floor(Math.random() * typeArr.length);
-  const randomType = typeArr[randomIndex] as BlockType;
+  const randomType = typeArr[randomIndex] as Tetris.BlockType;
   return new Block({
     type: randomType,
     shape: blockShapes[randomType],
@@ -60,7 +60,7 @@ const getNextBlock = (): Block => {
     yx: yxStartPosition[randomType]
   });
 }
-const tryMove = (matrixState: MatrixState, nextBlock: Block): boolean => {
+const tryMove = (matrixState: Tetris.MatrixState, nextBlock: Block): boolean => {
   const yx = nextBlock.yx;
   const shape = nextBlock.shape;
   const width = shape[0].length;

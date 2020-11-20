@@ -1,10 +1,9 @@
-import { KeyType, KeyControl } from '../types';
+import { Tetris } from '../types';
 import { tryMove } from '../utils';
-import Matrix from '../matrix';
 
-export default class Space implements KeyControl {
+export default class Space implements Tetris.KeyControl {
   constructor() {  }
-  keyDown = (e: KeyboardEvent) => {
+  drop = () => {
     const gs = window.tetris.states;
     const stateManager = window.tetris.stateManager;
     const matrix = window.tetris.matrix;
@@ -23,5 +22,16 @@ export default class Space implements KeyControl {
     stateManager.nextAround();
     setTimeout(stateManager.unlock, gs.speed/2);
   }
-  keyUp = (e: KeyboardEvent) => {}
+  keyDown = (e: KeyboardEvent) => {
+    window.tetris.keyEventController.down({
+      keyType: e.type as Tetris.KeyType,
+      callback: this.drop
+    });
+  }
+  keyUp = (e: KeyboardEvent) => {
+    window.tetris.keyEventController.up({
+      keyType: e.type as Tetris.KeyType,
+      callback: null
+    });
+  }
 }

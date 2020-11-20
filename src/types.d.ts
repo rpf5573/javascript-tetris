@@ -1,5 +1,6 @@
 import Block from './block';
 import Keyboard from './keyboard';
+import KeyEventController from './keyEventController';
 import Matrix from './matrix';
 import StateManager from './stateManager';
 
@@ -21,7 +22,7 @@ export namespace Tetris {
     timeStamp: number;
     yx: YX;
   }
-  export type Tetris = {
+  export type Store = {
     states: {
       currentBlock: Block | null,
       matrixState: MatrixState,
@@ -31,26 +32,25 @@ export namespace Tetris {
     },
     matrix: Matrix,
     keyboard: Keyboard,
-    stateManager: StateManager
+    stateManager: StateManager,
+    keyEventController: KeyEventController 
   }
   export interface KeyControl {
-    timer: NodeJS.Timeout
-    active: boolean
     keyDown: (e: KeyboardEvent) => void
     keyUp: (e: KeyboardEvent) => void
   }
   export type KeyCallback = {
     keyType: KeyType,
-    callback: () => void
+    callback?: () => void
   }
-  export type KeyTimer {
-    [keyType?: KeyType]: NodeJS.Timeout,
+  export interface KeyTimer {
+    [keyType: string]: NodeJS.Timeout,
   }
   export type KeyType = 'arrowUp' | 'arrowRight' | 'arrowDown' | 'arrowLeft' | 'space' | 'r' | 'p'
 }
 
 declare global {
   interface Window {
-    tetris: Tetris.Tetirs
+    tetris: Tetris.Store
   }
 }

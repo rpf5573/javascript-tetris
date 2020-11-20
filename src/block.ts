@@ -1,12 +1,12 @@
-import { blockShapes, blockTypes, yxRotateOrigin } from './const';
-import {BlockOption, BlockType, Shape, YX} from './types';
-class Block implements BlockOption {
-  type: BlockType;
-  shape: Shape;
+import { yxRotateOrigin } from './const';
+import { Tetris } from './types';
+class Block implements Tetris.BlockOption {
+  type: Tetris.BlockType;
+  shape: Tetris.Shape;
   rotateIndex: number;
   timeStamp: number;
-  yx: YX;
-  constructor(options: BlockOption) {
+  yx: Tetris.YX;
+  constructor(options: Tetris.BlockOption) {
     this.type = options.type;
     this.shape = options.shape;
     this.rotateIndex = options.rotateIndex;

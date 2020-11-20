@@ -1,10 +1,10 @@
 import Matrix from '../matrix';
+import { Tetris } from '../types';
 import { tryMove } from '../utils';
-import { KeyType, KeyControl } from '../types';
 
-export default class ArrowUp implements KeyControl {
+export default class ArrowUp implements Tetris.KeyControl {
   constructor() {  }
-  keyDown = (e: KeyboardEvent) => {
+  blockUp = () => {
     const gs = window.tetris.states
     const matrix = window.tetris.matrix;
     const nextBlock = gs.currentBlock.rotate();
@@ -14,5 +14,16 @@ export default class ArrowUp implements KeyControl {
       gs.currentBlock = nextBlock;
     }
   }
-  keyUp = (e: KeyboardEvent) => {}
+  keyDown = (e: KeyboardEvent) => {
+    window.tetris.keyEventController.down({
+      keyType: e.type as Tetris.KeyType,
+      callback: this.blockUp
+    });
+  }
+  keyUp = (e: KeyboardEvent) => {
+    window.tetris.keyEventController.up({
+      keyType: e.type as Tetris.KeyType,
+      callback: null
+    });
+  }
 }

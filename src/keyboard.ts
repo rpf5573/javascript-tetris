@@ -1,7 +1,6 @@
 import { EvalSourceMapDevToolPlugin } from 'webpack';
 import Matrix from './matrix';
 import {keyCodeWithType, keyCodes} from './const';
-import { KeyType, KeyControl } from './types';
 import ArrowUp from './keys/arrowUp';
 import ArrowRight from './keys/arrowRight';
 import ArrowDown from './keys/arrowDown';
@@ -9,8 +8,9 @@ import ArrowLeft from './keys/arrowLeft';
 import Space from './keys/space';
 import P from './keys/p';
 import R from './keys/r';
+import { Tetris } from './types';
 
-class Keyboard implements KeyControl {
+class Keyboard {
   arrowUp: ArrowUp;
   arrowRight: ArrowRight;
   arrowDown: ArrowDown;
@@ -29,13 +29,13 @@ class Keyboard implements KeyControl {
     document.addEventListener("keydown", this.keyDown);
     document.addEventListener("keyup", this.keyUp);
   }
-  keyDown = (e: KeyboardEvent) => {
+  keyDown = (e:KeyboardEvent) => {
     const gs = window.tetris.states;
     // 잠겨있으면 이벤트를 받지 않는다.
     if (gs.lock === true) { return; }
     // metaKey는 윈도우 혹은 cmd를 의미한다
     if (e.metaKey === true || keyCodes.indexOf(e.keyCode) === -1) { return; }
-    const type: KeyType = keyCodeWithType[e.keyCode];
+    const type: Tetris.KeyType = keyCodeWithType[e.keyCode];
     this[type].keyDown(e);
   }
   keyUp = (e: KeyboardEvent) => {
@@ -43,7 +43,7 @@ class Keyboard implements KeyControl {
     // 잠겨있으면 이벤트를 받지 않는다.
     if (gs.lock === true) { return; }
     if (e.metaKey === true || keyCodes.indexOf(e.keyCode) === -1) { return; }
-    const type: KeyType = keyCodeWithType[e.keyCode];
+    const type: Tetris.KeyType = keyCodeWithType[e.keyCode];
     this[type].keyUp(e);
   }
 }

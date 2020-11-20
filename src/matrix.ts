@@ -1,7 +1,7 @@
 import Block from './block';
-import { blankLine, blankMatrix } from './const';
-import { MatrixState, Line } from './types';
-import { deepCopy, getNextBlock, tryMove, getClearLines, isOver } from './utils';
+import { blankLine } from './const';
+import { Tetris } from './types';
+import { deepCopy, tryMove } from './utils';
 
 class Matrix {
   matrixNode: HTMLDivElement;
@@ -37,7 +37,7 @@ class Matrix {
     clearTimeout(this.timer);
     this.timer = setTimeout(fall, gs.speed);
   }
-  addBlock = (matrixState: MatrixState, block: Block): MatrixState => {
+  addBlock = (matrixState: Tetris.MatrixState, block: Block): Tetris.MatrixState => {
     const {yx, shape} = block;
     const newMatrixState = deepCopy(matrixState);
     shape.forEach((line, i) => {
@@ -89,10 +89,10 @@ class Matrix {
     });
     return matrix;
   }
-  render = (matrixState?: MatrixState) => {
+  render = (matrixState?: Tetris.MatrixState) => {
     if (matrixState == undefined) { matrixState = window.tetris.states.matrixState; }
     this.removeChildren(this.matrixNode); // 비우고 시작하자
-    matrixState.forEach((line: Line) => {
+    matrixState.forEach((line: Tetris.Line) => {
       const lineNode = document.createElement("div");
       lineNode.className = 'line';
       line.forEach(blockState => {

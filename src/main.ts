@@ -1,10 +1,10 @@
 import './style.scss';
 import Keyboard from './keyboard';
-import { width, height, blankMatrix, blockShapes, blockTypes } from './const';
+import { blankMatrix } from './const';
 import Matrix from './matrix';
-import Block from './block';
 import { getNextBlock, resize } from './utils';
 import StateManager from './stateManager';
+import KeyEventController from './keyEventController';
 
 resize();
 window.addEventListener('resize', resize);
@@ -18,6 +18,7 @@ window.tetris = {
   },
   matrix: new Matrix(),
   keyboard: new Keyboard(),
-  stateManager: new StateManager()
+  stateManager: new StateManager(),
+  keyEventController: new KeyEventController()
 }
 window.tetris.stateManager.start();
