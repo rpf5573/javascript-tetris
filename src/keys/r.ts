@@ -1,17 +1,19 @@
 import { Tetris } from '../types';
 
 export default class R implements Tetris.KeyControl {
+  type: Tetris.KeyType = 'r';
   constructor() {  }
   reset = () => { }
-  keyDown = (e: KeyboardEvent) => {
+  keyDown = () => {
     window.tetris.keyEventController.down({
-      keyType: e.type as Tetris.KeyType,
-      callback: this.reset
+      keyType: this.type,
+      callback: this.reset,
+      once: true
     });
   }
-  keyUp = (e: KeyboardEvent) => {
+  keyUp = () => {
     window.tetris.keyEventController.up({
-      keyType: e.type as Tetris.KeyType,
+      keyType: this.type,
       callback: null
     });
   }

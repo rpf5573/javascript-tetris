@@ -8,7 +8,7 @@ class Matrix {
   count: number = 0;
   timer: NodeJS.Timeout;
   constructor() {
-    this.matrixNode = document.querySelector(".game-screen > .matrix");
+    this.matrixNode = document.querySelector(".game-screen > .matrix > .inner");
   }
   removeChildren = (parentNode: HTMLDivElement) => {
     let child: ChildNode = null;

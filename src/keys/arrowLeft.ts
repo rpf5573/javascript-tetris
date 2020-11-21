@@ -2,6 +2,7 @@ import { tryMove } from '../utils';
 import { Tetris } from '../types';
 
 export default class ArrowLeft implements Tetris.KeyControl {
+  type: Tetris.KeyType = 'arrowLeft';
   constructor() {  }
   blockLeft = () => {
     const gs = window.tetris.states;
@@ -14,15 +15,15 @@ export default class ArrowLeft implements Tetris.KeyControl {
       gs.currentBlock = nextBlock;
     }
   }
-  keyDown = (e: KeyboardEvent) => {
+  keyDown = () => {
     window.tetris.keyEventController.down({
-      keyType: e.type as Tetris.KeyType,
+      keyType: this.type,
       callback: this.blockLeft
     });
   }
-  keyUp = (e: KeyboardEvent) => {
+  keyUp = () => {
     window.tetris.keyEventController.up({
-      keyType: e.type as Tetris.KeyType,
+      keyType: this.type,
       callback: null
     });
   }

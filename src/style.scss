@@ -34,9 +34,16 @@ $screenWidth: $matrixWidth + $statusWidth + $screenPadding*2 + $screenBorderWidt
 $screenHeight: $matrixHeight + $screenPadding*2 + $screenBorderWidth*2;
 $wholeWidth: $screenWidth;
 $wholeHeight: $screenHeight;
+$logoWidth: $matrixWidth;
 
 #page {
   overflow: hidden;
+
+  .bg{
+    background:url('./assets/bg.png') no-repeat;
+    overflow:hidden;
+  }
+
   .container {
     width: $wholeWidth;
     height: $wholeHeight;
@@ -47,55 +54,84 @@ $wholeHeight: $screenHeight;
     left: 50%;
     margin-top: -($wholeHeight/2);
     margin-left: -($wholeWidth/2);
-  }
-}
 
-.game-screen {
-  background: #9ead86;
-  padding: $screenPadding;
-  border: $screenBorderWidth solid #494536;
-  display: inline-flex;
-  width: $screenWidth;
-  height: $screenHeight;
-
-  .matrix {
-    border: $matrixBorderWidth solid #000;
-    padding: $matrixPadding;
-    width: $matrixWidth;
-    .line {
-      .b {
-        width: $blockContentWidth;
-        height: $blockContentHeight;
-        padding: $blockPadding;
-        border: $blockBorderWidth solid #879372;
-        margin-right: $blockMarginRight;
-        margin-bottom: $blockMarginBottom;
-        float: left;
-        &:after {
-          content: "";
-          display: block;
-          width: $blockInnerWidth;
-          height: $blockInnerHeight;
-          background: #879372;
+    .game-screen {
+      background: #9ead86;
+      padding: $screenPadding;
+      border: $screenBorderWidth solid #494536;
+      display: inline-flex;
+      width: $screenWidth;
+      height: $screenHeight;
+      .matrix {
+        position: relative;
+        border: $matrixBorderWidth solid #000;
+        padding: $matrixPadding;
+        width: $matrixWidth;
+        .logo {
+          position: absolute;
+          top: 30%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 224px;
+          height: 200px;
+          background-color: yellow;
+          z-index: 9999;
+          display: none;
+          text-align: center;
           overflow: hidden;
-        }
-        &.active {
-          border: $blockBorderWidth solid black;
-          &:after {
-            background: black;
+          .dragon {
+            width: 80px;
+            height: 86px;
+            margin: 0 auto;
+            background-position: 0 -100px;
+            &.r1,&.l1 { background-position: 0 -100px; }
+            &.r2,&.l2 { background-position: -100px -100px; }
+            &.r3,&.l3 { background-position: -200px -100px; }
+            &.r4,&.l4 { background-position: -300px -100px; }
+            &.l1,&.l2,&.l3,&.l4{ transform: scale(-1, 1); } 
+          }
+          &.active {
+            display: block;
           }
         }
-        &.blink {
-          &:after {
-            background: #560000;
+        & > .inner {
+          .line {
+            .b {
+              width: $blockContentWidth;
+              height: $blockContentHeight;
+              padding: $blockPadding;
+              border: $blockBorderWidth solid #879372;
+              margin-right: $blockMarginRight;
+              margin-bottom: $blockMarginBottom;
+              float: left;
+              &:after {
+                content: "";
+                display: block;
+                width: $blockInnerWidth;
+                height: $blockInnerHeight;
+                background: #879372;
+                overflow: hidden;
+              }
+              &.active {
+                border: $blockBorderWidth solid black;
+                &:after {
+                  background: black;
+                }
+              }
+              &.blink {
+                &:after {
+                  background: #560000;
+                }
+              }
+            }
           }
         }
       }
+      .status {
+        width: $statusWidth;
+        border: $statusBorderWidth solid black;
+        padding: $statusPadding;
+      }
     }
-  }
-  .status {
-    width: $statusWidth;
-    border: $statusBorderWidth solid black;
-    padding: $statusPadding;
   }
 }

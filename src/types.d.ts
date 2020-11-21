@@ -36,12 +36,13 @@ export namespace Tetris {
     keyEventController: KeyEventController 
   }
   export interface KeyControl {
-    keyDown: (e: KeyboardEvent) => void
-    keyUp: (e: KeyboardEvent) => void
+    keyDown: (type: KeyType) => void
+    keyUp: (type: KeyType) => void
   }
   export type KeyCallback = {
     keyType: KeyType,
-    callback?: () => void
+    callback?: () => void,
+    once?: boolean
   }
   export interface KeyTimer {
     [keyType: string]: NodeJS.Timeout,

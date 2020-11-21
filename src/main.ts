@@ -21,4 +21,4 @@ window.tetris = {
   stateManager: new StateManager(),
   keyEventController: new KeyEventController()
 }
-window.tetris.stateManager.start();
+window.tetris.stateManager.ready();

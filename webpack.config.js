@@ -12,6 +12,18 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [{ 
+          loader: 'file-loader',
+          options: {
+            context: join(__dirname, "src/"),
+            outputPath: '/assets',
+            // publicPath: '/dist',
+            // useRelativePaths: true
+          }
+        }]
+      },
+      {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: 'ts-loader'

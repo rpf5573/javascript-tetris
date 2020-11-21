@@ -2,18 +2,20 @@ import Matrix from '../matrix';
 import { Tetris } from '../types';
 
 export default class P implements Tetris.KeyControl {
+  type: Tetris.KeyType = 'p';
   constructor() { }
   pause = () => {
   }
-  keyDown = (e: KeyboardEvent) => {
+  keyDown = () => {
     window.tetris.keyEventController.down({
-      keyType: e.type as Tetris.KeyType,
-      callback: this.pause
+      keyType: this.type,
+      callback: this.pause,
+      once: true
     });
   }
-  keyUp = (e: KeyboardEvent) => {
+  keyUp = () => {
     window.tetris.keyEventController.up({
-      keyType: e.type as Tetris.KeyType,
+      keyType: this.type,
       callback: null
     });
   }

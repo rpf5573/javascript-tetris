@@ -25,6 +25,10 @@ class KeyEventController {
 
     // 한번 실행한다
     e.callback();
+    // 한번만 실행하는거라면 루프 돌리지 말자
+    if (e.once && e.once == true) { return }
+
+    // 계속 실행한다
     let begin = 100;
     const interval = 50;
     const loop = () => {

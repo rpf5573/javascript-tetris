@@ -3,6 +3,11 @@ import {blankMatrix} from './const';
 
 class StateManager {
   constructor() {}
+  ready = () => {
+    const gs = window.tetris.states;
+    const matrix = window.tetris.matrix;
+    matrix.render(blankMatrix);
+  }
   lock = () => {
     const gs = window.tetris.states;
     gs.lock = true;

@@ -30,13 +30,14 @@ class Keyboard {
     document.addEventListener("keyup", this.keyUp);
   }
   keyDown = (e:KeyboardEvent) => {
+    console.log("keyboard - keyDown - e : ", e);
     const gs = window.tetris.states;
     // 잠겨있으면 이벤트를 받지 않는다.
     if (gs.lock === true) { return; }
     // metaKey는 윈도우 혹은 cmd를 의미한다
     if (e.metaKey === true || keyCodes.indexOf(e.keyCode) === -1) { return; }
     const type: Tetris.KeyType = keyCodeWithType[e.keyCode];
-    this[type].keyDown(e);
+    this[type].keyDown();
   }
   keyUp = (e: KeyboardEvent) => {
     const gs = window.tetris.states;
@@ -44,7 +45,7 @@ class Keyboard {
     if (gs.lock === true) { return; }
     if (e.metaKey === true || keyCodes.indexOf(e.keyCode) === -1) { return; }
     const type: Tetris.KeyType = keyCodeWithType[e.keyCode];
-    this[type].keyUp(e);
+    this[type].keyUp();
   }
 }
 
