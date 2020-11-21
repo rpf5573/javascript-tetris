@@ -7,6 +7,7 @@ class StateManager {
     const gs = window.tetris.states;
     const matrix = window.tetris.matrix;
     matrix.render(blankMatrix);
+    window.tetris.logo.animate();
   }
   lock = () => {
     const gs = window.tetris.states;
