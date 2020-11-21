@@ -7,6 +7,7 @@ class StateManager {
     const gs = window.tetris.states;
     const matrix = window.tetris.matrix;
     matrix.render(blankMatrix);
+    window.tetris.logo.show();
     window.tetris.logo.animate();
   }
   lock = () => {
@@ -18,10 +19,14 @@ class StateManager {
     gs.lock = false;
   }
   start = () => {
-    const gs = window.tetris.states;
-    const matrix = window.tetris.matrix;
-    matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
-    matrix.autoDown();
+    window.tetris.logo.hide();
+    setTimeout(() => {
+      const gs = window.tetris.states;
+      gs.currentBlock = getNextBlock();
+      const matrix = window.tetris.matrix;
+      matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
+      matrix.autoDown();
+    }, 300);
   }
   reset = () => {
     this.lock();

@@ -3,6 +3,7 @@ import Keyboard from './keyboard';
 import KeyEventController from './keyEventController';
 import Logo from './logo';
 import Matrix from './matrix';
+import Point from './point';
 import StateManager from './stateManager';
 
 
@@ -35,7 +36,8 @@ export namespace Tetris {
     keyboard: Keyboard,
     stateManager: StateManager,
     keyEventController: KeyEventController ,
-    logo: Logo
+    logo: Logo,
+    point: Point
   }
   export interface KeyControl {
     keyDown: (type: KeyType) => void

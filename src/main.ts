@@ -6,12 +6,13 @@ import { getNextBlock, resize } from './utils';
 import StateManager from './stateManager';
 import KeyEventController from './keyEventController';
 import Logo from './logo'; 
+import Point from './point';
 
 resize();
 window.addEventListener('resize', resize);
 window.tetris = {
   states: {
-    currentBlock: getNextBlock(),
+    currentBlock: null, // 시작은 null로 둬야한다. 그래야, space를 눌렀을때 게임을 시작하는건지 block을 drop하는건지 알수있기 때문
     matrixState: blankMatrix,
     speed: 600,
     point: 0,
@@ -21,6 +22,8 @@ window.tetris = {
   keyboard: new Keyboard(),
   stateManager: new StateManager(),
   keyEventController: new KeyEventController(),
-  logo: new Logo()
+  logo: new Logo(),
+  point: new Point()
 }
 window.tetris.stateManager.ready();
+window.tetris.point.updatePoint(12345);

@@ -1,22 +1,72 @@
 class Logo {
   logo: HTMLDivElement;
-  dragon: HTMLDivElement
-  timer: NodeJS.Timeout
+  dragon: HTMLDivElement;
+  timer: NodeJS.Timeout;
+  basicClassName = "dragon bg";
   constructor() {
     this.logo = document.querySelector(".game-screen > .matrix > .logo");
     this.dragon = this.logo.children[0] as HTMLDivElement;
   }
   show = () => {
-    this.logo.classList.add('active');
+    this.logo.className = 'logo active';
   }
-  run = () => {
-    const count = 0;
-    this.timer = setTimeout(() => {
-      this.logo.className = "dragon r3";
-    }, 150);
+  hide = () => {
+    this.logo.className = 'logo';
+    clearTimeout(this.timer);
+  }
+  eye = (callback: () => void) => {
+    let count = 0;
+    let cn = 'r';
+    const f = (callback: () => void) => {
+      this.timer = setTimeout(() => {
+        this.dragon.className = `${this.basicClassName} ${cn+1}`;
+        this.timer = setTimeout(() => {
+          this.dragon.className = `${this.basicClassName} ${cn+2}`;
+          count += 1;
+          if (count < 3) {
+            f(callback);
+            return
+          }
+          this.dragon.className = `${this.basicClassName} ${cn+1}`;
+          callback();
+        }, 750);
+      }, 750);
+    }
+    f(callback);
+  }
+  run = (callback: () => void) => {
+    let count = 0
+    let cn = 'r';
+    const f = (callback: () => void) => {
+      this.timer = setTimeout(() => {
+        this.dragon.className = `${this.basicClassName} ${cn+4}`;
+        this.timer = setTimeout(() => {
+          this.dragon.className = `${this.basicClassName} ${cn+3}`;
+          count += 1;
+          if (count == 10 || count == 20) {
+            cn = cn === 'r' ? 'l' : 'r';
+          }
+          if (count < 30) {
+            f(callback);
+            return
+          }
+          this.dragon.className = `${this.basicClassName} ${cn+1}`;
+          callback();
+        }, 150);
+      }, 150);
+    }
+    f(callback);
   }
   animate = () => {
-    this.run();
+    this.dragon.className = `${this.basicClassName} r1`;
+    const f = () => {};
+    this.timer = setTimeout(() => {
+      this.run(() => {
+        this.eye(() => {
+          this.animate();
+        })
+      });
+    }, 800);
   }
 }
 

@@ -24,16 +24,24 @@ export default class Space implements Tetris.KeyControl {
     setTimeout(stateManager.unlock, gs.speed/2);
   }
   keyDown = () => {
-    window.tetris.keyEventController.down({
-      keyType: this.type,
-      callback: this.drop,
-      once: true
-    });
+    const tetris = window.tetris;
+    if (tetris.states.currentBlock != null) {
+      tetris.keyEventController.down({
+        keyType: this.type,
+        callback: this.drop,
+        once: true
+      });
+    } else {
+      tetris.stateManager.start();
+    }
   }
   keyUp = () => {
-    window.tetris.keyEventController.up({
-      keyType: this.type,
-      callback: null
-    });
+    const tetris = window.tetris;
+    if (tetris.states.currentBlock != null) {
+      window.tetris.keyEventController.up({
+        keyType: this.type,
+        callback: null
+      });
+    }
   }
 }
