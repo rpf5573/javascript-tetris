@@ -16,25 +16,30 @@ class Point {
   }
   updatePoint = (_point: number) => {
     this.point += _point;
-    this.render();
+    this.render(this.point);
   }
   setPoint = (_point: number) => {
     this.point = _point;
-    this.render();
+    this.render(this.point);
   }
-  render = () => {
-    const pArr: number[] = (Array.from(String(this.point), Number)).reverse();
+  render = (point: number) => {
+    let pArr: number[] = (Array.from(String(point), Number)).reverse();
+    if (point == 0) { pArr = [0]; }
     const len = this.numbersEl.children.length;
     const startIndex = len - pArr.length;
-    for(let i = startIndex; i < len; i++) {
+    for(let i = 0; i < len; i++) {
       const el = this.numbersEl.children.item(i);
-      el.className = `bg s_${pArr.pop()}`;
+      if (i >= startIndex) {
+        el.className = `bg s_${pArr.pop()}`;
+      } else {
+        el.className = `bg s_n`;
+      }
     }
   }
-  reset = () => {
+  reset = (title: string) => {
     this.point = 0;
-    this.changeTitle(this.lr);
-    this.render();
+    this.changeTitle(title);
+    this.render(0);
   }
 }
 

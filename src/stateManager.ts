@@ -9,21 +9,20 @@ class StateManager {
     const matrix = tetris.matrix;
     clearTimeout(matrix.timer);
     matrix.render(deepCopy(blankMatrix));
+
+    tetris.states.currentBlock = null;
     if (tetris.states.nextBlock == null) { tetris.states.nextBlock = getNextBlock(); }
     tetris.next.reset(); // next를 지우고
 
     const lastPoint = Number(localStorage.getItem('last-point'));
     if ( lastPoint > 0 ) {
       tetris.point.changeTitle(tetris.point.lr);
-      tetris.point.setPoint(lastPoint);
-    } else {
-      tetris.point.reset();
+      tetris.point.render(lastPoint); // 그리기만 하고 넣지는 말자
     }
+
     tetris.logo.show(); // logo 보이기 + animation까지
     tetris.logo.animate();
-    setTimeout(() => {
-      this.unlock();
-    }, 500);
+    setTimeout(() => { this.unlock(); }, 500);
     if (callback) {callback()}
   }
   lock = () => {
@@ -37,7 +36,7 @@ class StateManager {
   start = () => {
     const tetris = window.tetris;
     tetris.logo.hide();
-    tetris.point.changeTitle(tetris.point.p); // 포인트 title변경하고
+    tetris.point.reset(tetris.point.p); // 포인트 리셋해야지
     setTimeout(() => {
       const gs = window.tetris.states;
       gs.currentBlock = gs.nextBlock;
@@ -63,7 +62,7 @@ class StateManager {
     this.lock();
     const tetris = window.tetris;
     const point = tetris.point.point;
-    if (point > 0) { localStorage.setItem('last-point', `${tetris.point.point}`); }
+    localStorage.setItem('last-point', `${point}`);
     tetris.matrix.reset(() => {
       setTimeout(() => {
         this.ready(this.unlock);
