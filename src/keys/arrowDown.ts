@@ -7,6 +7,7 @@ export default class ArrowDown implements Tetris.KeyControl {
   constructor() {  }
   blockDown = () => {
     const gs = window.tetris.states;
+    if (gs.currentBlock == null) {return}
     const nextBlock = gs.currentBlock.fall();
     const matrix = window.tetris.matrix;
     // 갈수있으면 가고, 못가면 어쩔 수 없고

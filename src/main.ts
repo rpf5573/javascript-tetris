@@ -16,8 +16,7 @@ window.tetris = {
     currentBlock: null, // 시작은 null로 둬야한다. 그래야, space를 눌렀을때 게임을 시작하는건지 block을 drop하는건지 알수있기 때문
     nextBlock: getNextBlock(),
     matrixState: blankMatrix,
-    speed: 600,
-    point: 0,
+    speed: 3000,
     lock: false
   },
   matrix: new Matrix(),

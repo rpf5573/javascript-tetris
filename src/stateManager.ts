@@ -3,12 +3,28 @@ import {blankMatrix} from './const';
 
 class StateManager {
   constructor() {}
-  ready = () => {
-    const gs = window.tetris.states;
-    const matrix = window.tetris.matrix;
-    matrix.render(blankMatrix);
-    window.tetris.logo.show();
-    window.tetris.logo.animate();
+  ready = (callback?:() => void) => {
+    this.lock();
+    const tetris = window.tetris;
+    const matrix = tetris.matrix;
+    clearTimeout(matrix.timer);
+    matrix.render(deepCopy(blankMatrix));
+    if (tetris.states.nextBlock == null) { tetris.states.nextBlock = getNextBlock(); }
+    tetris.next.reset(); // next를 지우고
+
+    const lastPoint = Number(localStorage.getItem('last-point'));
+    if ( lastPoint > 0 ) {
+      tetris.point.changeTitle(tetris.point.lr);
+      tetris.point.setPoint(lastPoint);
+    } else {
+      tetris.point.reset();
+    }
+    tetris.logo.show(); // logo 보이기 + animation까지
+    tetris.logo.animate();
+    setTimeout(() => {
+      this.unlock();
+    }, 500);
+    if (callback) {callback()}
   }
   lock = () => {
     const gs = window.tetris.states;
@@ -32,57 +48,48 @@ class StateManager {
       matrix.autoDown();
     }, 300);
   }
+  matrixCleanUp = (callback: () => void) => {
+  }
   reset = () => {
     this.lock();
-    const gs = window.tetris.states;
-    const matrix = window.tetris.matrix;
-    const animateLine = (index: number) => {
-      const len = 10
-      if (index < 20) {
-        const i = 20 - (index + 1)
-        gs.matrixState[i] = Array(len).fill(1);
-        matrix.render();
-      } else if (index < 40) {
-        const i = index - 20;
-        gs.matrixState[i] = Array(len).fill(0);
-        matrix.render();
-      } 
-      // 마지막에 index가 40이라면, 즉 다 끝났다면!
-      else {
-        this.unlock();
-        this.overEnd();
-      }
-    }
-    for (let i = 0; i <= 40; i++) {
-      setTimeout(animateLine.bind(null, i), 50 * (i+1));
-    }
+    const tetris = window.tetris;
+    tetris.states.currentBlock = null;
+    tetris.states.nextBlock = null;
+    tetris.matrix.reset(() => {
+      this.ready(this.unlock);
+    });
   }
-  overEnd = () => {
-    const gs = window.tetris.states;
-    const matrix = window.tetris.matrix;
-    clearTimeout(matrix.timer);
-    gs.matrixState = deepCopy(blankMatrix);
-    matrix.render();
+  gameOver = () => {
+    this.lock();
+    const tetris = window.tetris;
+    const point = tetris.point.point;
+    if (point > 0) { localStorage.setItem('last-point', `${tetris.point.point}`); }
+    tetris.matrix.reset(() => {
+      setTimeout(() => {
+        this.ready(this.unlock);
+      }, 500);
+    });
   }
   nextAround = () => {
-    const gs = window.tetris.states;
-    const matrix = window.tetris.matrix;
+    const tetris = window.tetris;
+    const gs = tetris.states;
+    const matrix = tetris.matrix;
     clearTimeout(matrix.timer);
     const lines = getClearLines();
     if (lines.length > 0) {
       matrix.clearLines(lines, (point:number) => {
-        window.tetris.point.plusPoint(point); // clear한다음에 점수도 주자
+        tetris.point.updatePoint(point); // clear한다음에 점수도 주자
       });
       return
     }
     if (isOver()) {
-      this.reset();
+      this.gameOver();
       return
     }
     setTimeout(() => {
       gs.currentBlock = gs.nextBlock;
       gs.nextBlock = getNextBlock(); // deep copy를 안했는데 이게 문제가 될까?
-      window.tetris.next.render(gs.nextBlock);
+      tetris.next.render(gs.nextBlock);
       matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
       matrix.autoDown();
     }, 100);

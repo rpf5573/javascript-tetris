@@ -9,7 +9,7 @@ class Next {
     ]
   }
   render = (nextBlock: Block) => {
-    this.clear();
+    this.reset();
     nextBlock.shape.forEach((line: number[], i) => {
       line.forEach((blockState:number, j) => {
         if (blockState == 1) {
@@ -18,7 +18,7 @@ class Next {
       });
     })
   }
-  clear = () => {
+  reset = () => {
     this.blocks.forEach((line: NodeListOf<Element>, i) => {
       line.forEach((el:Element, j) => {
         el.className = 'b';

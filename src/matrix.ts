@@ -90,6 +90,31 @@ class Matrix {
     });
     return matrix;
   }
+  reset = (callback?: () => void) => {
+    const tetris = window.tetris;
+    const gs = tetris.states;
+    const matrix = tetris.matrix;
+    const stateManager = tetris.stateManager;
+    const animateLine = (index: number) => {
+      const len = 10
+      if (index < 20) {
+        const i = 20 - (index + 1)
+        gs.matrixState[i] = Array(len).fill(1);
+        matrix.render();
+      } else if (index < 40) {
+        const i = index - 20;
+        gs.matrixState[i] = Array(len).fill(0);
+        matrix.render();
+      }
+      // 마지막에 index가 40이라면, 즉 다 끝났다면!
+      else {
+        if (callback) { callback(); }
+      }
+    }
+    for (let i = 0; i <= 40; i++) {
+      setTimeout(animateLine.bind(null, i), 50 * (i+1));
+    }
+  }
   render = (matrixState?: Tetris.MatrixState) => {
     if (matrixState == undefined) { matrixState = window.tetris.states.matrixState; }
     this.removeChildren(this.matrixNode); // 비우고 시작하자

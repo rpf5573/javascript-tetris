@@ -30,7 +30,6 @@ class Keyboard {
     document.addEventListener("keyup", this.keyUp);
   }
   keyDown = (e:KeyboardEvent) => {
-    console.log("keyboard - keyDown - e : ", e);
     const gs = window.tetris.states;
     // 잠겨있으면 이벤트를 받지 않는다.
     if (gs.lock === true) { return; }

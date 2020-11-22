@@ -59,7 +59,6 @@ class Logo {
   }
   animate = () => {
     this.dragon.className = `${this.basicClassName} r1`;
-    const f = () => {};
     this.timer = setTimeout(() => {
       this.run(() => {
         this.eye(() => {

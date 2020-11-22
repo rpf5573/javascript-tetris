@@ -6,6 +6,7 @@ export default class Space implements Tetris.KeyControl {
   constructor() {  }
   drop = () => {
     const gs = window.tetris.states;
+    if (gs.currentBlock == null) {return}
     const stateManager = window.tetris.stateManager;
     const matrix = window.tetris.matrix;
     let bottom = gs.currentBlock;
@@ -16,32 +17,25 @@ export default class Space implements Tetris.KeyControl {
         break
       }
     }
-    stateManager.lock();
     gs.currentBlock = bottom;
     gs.matrixState = matrix.addBlock(gs.matrixState, gs.currentBlock);
     matrix.render(gs.matrixState);
     stateManager.nextAround();
-    setTimeout(stateManager.unlock, gs.speed/2);
   }
   keyDown = () => {
     const tetris = window.tetris;
-    if (tetris.states.currentBlock != null) {
-      tetris.keyEventController.down({
-        keyType: this.type,
-        callback: this.drop,
-        once: true
-      });
-    } else {
-      tetris.stateManager.start();
-    }
+    console.log("lock : ", tetris.states.lock);
+    tetris.keyEventController.down({
+      keyType: this.type,
+      callback: (tetris.states.currentBlock != null ) ? this.drop : tetris.stateManager.start,
+      once: true
+    });
   }
   keyUp = () => {
     const tetris = window.tetris;
-    if (tetris.states.currentBlock != null) {
-      window.tetris.keyEventController.up({
-        keyType: this.type,
-        callback: null
-      });
-    }
+    tetris.keyEventController.up({
+      keyType: this.type,
+      callback: null
+    });
   }
 }

@@ -7,6 +7,7 @@ export default class ArrowRight implements Tetris.KeyControl {
   type: Tetris.KeyType = 'arrowRight';
   blockRight = () => {
     const gs = window.tetris.states;
+    if (gs.currentBlock == null) {return}
     const matrix = window.tetris.matrix;
     const nextBlock = gs.currentBlock.right();
     // 갈수있으면 가고, 못가면 어쩔 수 없고

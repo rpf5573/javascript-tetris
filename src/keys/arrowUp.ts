@@ -7,6 +7,7 @@ export default class ArrowUp implements Tetris.KeyControl {
   constructor() {  }
   blockUp = () => {
     const gs = window.tetris.states
+    if (gs.currentBlock == null) {return}
     const matrix = window.tetris.matrix;
     const nextBlock = gs.currentBlock.rotate();
     if (tryMove(gs.matrixState, nextBlock)) {
