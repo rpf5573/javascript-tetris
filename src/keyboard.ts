@@ -1,5 +1,4 @@
 import { EvalSourceMapDevToolPlugin } from 'webpack';
-import Matrix from './matrix';
 import {keyCodeWithType, keyCodes} from './const';
 import ArrowUp from './keys/arrowUp';
 import ArrowRight from './keys/arrowRight';

@@ -6,6 +6,7 @@ export default class ArrowLeft implements Tetris.KeyControl {
   constructor() {  }
   blockLeft = () => {
     const gs = window.tetris.states;
+    if (gs.lock === true) {return}
     if (gs.currentBlock == null) {return}
     const matrix = window.tetris.matrix;
     const nextBlock = gs.currentBlock.left();

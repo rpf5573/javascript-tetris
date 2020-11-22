@@ -18,12 +18,14 @@ export default class ArrowDown implements Tetris.KeyControl {
     }
   }
   keyDown = () => {
+    if (window.tetris.states.lock === true) {return}
     window.tetris.keyEventController.down({
       keyType: this.type,
       callback: this.blockDown,
     });
   }
   keyUp = () => {
+    if (window.tetris.states.lock === true) {return}
     window.tetris.keyEventController.up({
       keyType: this.type,
       callback: null

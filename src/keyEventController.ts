@@ -14,11 +14,11 @@ class KeyEventController {
     });
   }
   down = (e: Tetris.KeyCallback) => {
+    if (window.tetris.states.lock === true) { return }
     if (this.activeKey == e.keyType) { return }
     else { this.activeKey = e.keyType; }
 
     this.clearEvent(e.keyType);
-    this.events[e.keyType] = null;
 
     // undefined가 맞나?
     if (e.callback === undefined) {return}
@@ -41,6 +41,7 @@ class KeyEventController {
     loop();
   }
   up = (e: Tetris.KeyCallback) => {
+    if (window.tetris.states.lock === true) { return }
     if (this.activeKey == e.keyType) { this.activeKey = null; }
     this.clearEvent(e.keyType);
     this.events[e.keyType] = null;

@@ -18,10 +18,7 @@ class Matrix {
     const gs = window.tetris.states;
     const stateManager = window.tetris.stateManager;
     const fall = () => {
-      if (gs.lock == true) {
-        this.timer = setTimeout(fall, gs.speed);
-        return
-      }
+      if (gs.lock == true) { return }
       let currentBlock = gs.currentBlock;
       const nextBlock = currentBlock.fall();
       if (tryMove(gs.matrixState, nextBlock)) {
@@ -94,7 +91,6 @@ class Matrix {
     const tetris = window.tetris;
     const gs = tetris.states;
     const matrix = tetris.matrix;
-    const stateManager = tetris.stateManager;
     const animateLine = (index: number) => {
       const len = 10
       if (index < 20) {
@@ -112,7 +108,7 @@ class Matrix {
       }
     }
     for (let i = 0; i <= 40; i++) {
-      setTimeout(animateLine.bind(null, i), 50 * (i+1));
+      setTimeout(animateLine.bind(null, i), 40 * (i+1));
     }
   }
   render = (matrixState?: Tetris.MatrixState) => {

@@ -22,7 +22,7 @@ class StateManager {
 
     tetris.logo.show(); // logo 보이기 + animation까지
     tetris.logo.animate();
-    setTimeout(() => { this.unlock(); }, 500);
+    this.unlock();
     if (callback) {callback()}
   }
   lock = () => {
@@ -46,8 +46,6 @@ class StateManager {
       matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
       matrix.autoDown();
     }, 300);
-  }
-  matrixCleanUp = (callback: () => void) => {
   }
   reset = () => {
     this.lock();
