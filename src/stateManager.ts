@@ -19,10 +19,14 @@ class StateManager {
     gs.lock = false;
   }
   start = () => {
-    window.tetris.logo.hide();
+    const tetris = window.tetris;
+    tetris.logo.hide();
+    tetris.point.changeTitle(tetris.point.p); // 포인트 title변경하고
     setTimeout(() => {
       const gs = window.tetris.states;
-      gs.currentBlock = getNextBlock();
+      gs.currentBlock = gs.nextBlock;
+      gs.nextBlock = getNextBlock(); // deep copy를 안했는데 이게 문제가 될까?
+      tetris.next.render(gs.nextBlock);
       const matrix = window.tetris.matrix;
       matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
       matrix.autoDown();
@@ -66,7 +70,9 @@ class StateManager {
     clearTimeout(matrix.timer);
     const lines = getClearLines();
     if (lines.length > 0) {
-      matrix.clearLines(lines);
+      matrix.clearLines(lines, (point:number) => {
+        window.tetris.point.plusPoint(point); // clear한다음에 점수도 주자
+      });
       return
     }
     if (isOver()) {
@@ -74,7 +80,9 @@ class StateManager {
       return
     }
     setTimeout(() => {
-      gs.currentBlock = getNextBlock();
+      gs.currentBlock = gs.nextBlock;
+      gs.nextBlock = getNextBlock(); // deep copy를 안했는데 이게 문제가 될까?
+      window.tetris.next.render(gs.nextBlock);
       matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
       matrix.autoDown();
     }, 100);

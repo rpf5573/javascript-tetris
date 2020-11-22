@@ -52,7 +52,7 @@ class Matrix {
     });
     return newMatrixState;
   }
-  clearLines = (lines: number[]) => {
+  clearLines = (lines: number[], callback:(point:number) => void) => {
     const stateManager = window.tetris.stateManager;
     stateManager.lock(); // 잠그고
     this.animateLines(lines, () => {
@@ -63,6 +63,7 @@ class Matrix {
       });
       window.tetris.states.matrixState = newMatrix;
       this.render();
+      callback(lines.length * 50);
       stateManager.unlock(); // 풀어준다
       stateManager.nextAround();
     });

@@ -14,7 +14,7 @@ class Point {
     this.title = _title;
     this.titleEl.innerText = this.title;
   }
-  updatePoint = (_point: number) => {
+  plusPoint = (_point: number) => {
     this.point += _point;
     const pArr: number[] = (Array.from(String(this.point), Number)).reverse();
     console.log(pArr);
