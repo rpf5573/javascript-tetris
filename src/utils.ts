@@ -1,5 +1,5 @@
 import Block from './block';
-import { blockTypes, yxStartPosition, blockShapes, width, height } from './const';
+import { blockTypes, yxStartPosition, blockShapes, width, height, blankLine } from './const';
 import { Tetris } from './types';
 
 /* 화면 크기가 바뀔때마다 게임판의 크기도 조정한다 */
@@ -29,7 +29,36 @@ const resize = () => {
     containerEl.style.setProperty(property, css[property])  
   });
 }
-const getStartMatrix = () => {}
+const getStartMatrix = (startLines: number) => {
+  const getLine = (min: number, max: number) => {
+    const blackBlockCount: number = Math.floor(((max - min) + 1) * Math.random()) + min;
+    const line = [];
+    for (let i = 0; i < blackBlockCount; i++) {
+      line.push(1); // 1은 검은색 블럭을 의미한다. 즉, count만큼 검은 블럭을 넣겠다는 의미.
+    }
+    const emptyBlockCount = 10 - blackBlockCount;
+    for (let i = 0; i < emptyBlockCount; i++) {
+      const index = Math.floor((line.length + 1) * Math.random());
+      line.splice(index, 0, 0);
+    }
+    return line;
+  }
+  const startMatrix = []
+
+  for (let i = 0; i < startLines; i++) {
+    if (i <= 2) { // 0-3
+      startMatrix.push(getLine(5, 8));
+    } else if (i <= 6) { // 4-6
+      startMatrix.push(getLine(4, 9));
+    } else { // 7-9
+      startMatrix.push(getLine(3, 9));
+    }
+  }
+  for (let i = 0, len = 20 - startLines; i < len; i++) { // 插入上部分的灰色
+    startMatrix.unshift([...blankLine]);
+  }
+  return startMatrix;
+}
 const getClearLines = (): number[] => {
   const gs = window.tetris.states;
   const clearLines: number[] = [];

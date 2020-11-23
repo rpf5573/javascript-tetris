@@ -5,6 +5,7 @@ import Logo from './logo';
 import Matrix from './matrix';
 import Next from './next';
 import Point from './point';
+import StartLine from './startLine';
 import StateManager from './stateManager';
 
 
@@ -31,7 +32,8 @@ export namespace Tetris {
       nextBlock: Block | null,
       matrixState: MatrixState,
       speed: number,
-      lock: boolean
+      lock: boolean,
+      startLines: number
     },
     matrix: Matrix,
     keyboard: Keyboard,
@@ -39,7 +41,8 @@ export namespace Tetris {
     keyEventController: KeyEventController ,
     logo: Logo,
     point: Point,
-    next: Next
+    next: Next,
+    startLine: StartLine
   }
   export interface KeyControl {
     keyDown: (type: KeyType) => void

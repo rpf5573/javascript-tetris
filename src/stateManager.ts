@@ -1,4 +1,4 @@
-import {getNextBlock, deepCopy, getClearLines, isOver} from './utils';
+import {getNextBlock, deepCopy, getClearLines, isOver, getStartMatrix} from './utils';
 import {blankMatrix} from './const';
 
 class StateManager {
@@ -39,12 +39,18 @@ class StateManager {
     tetris.point.reset(tetris.point.p); // 포인트 리셋해야지
     setTimeout(() => {
       const gs = window.tetris.states;
+      gs.matrixState = getStartMatrix(gs.startLines);
       gs.currentBlock = gs.nextBlock;
       gs.nextBlock = getNextBlock(); // deep copy를 안했는데 이게 문제가 될까?
       tetris.next.render(gs.nextBlock);
       const matrix = window.tetris.matrix;
-      matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
-      matrix.autoDown();
+      matrix.render(); // startLine 먼저 그리자
+      setTimeout(() => {
+        matrix.render(matrix.addBlock(gs.matrixState, gs.currentBlock));
+        setTimeout(() => {
+          matrix.autoDown();
+        }, 500);
+      }, 500);
     }, 300);
   }
   reset = () => {

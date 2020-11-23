@@ -29,8 +29,8 @@ class Logo {
           }
           this.dragon.className = `${this.basicClassName} ${cn+1}`;
           callback();
-        }, 750);
-      }, 750);
+        }, 550);
+      }, 550);
     }
     f(callback);
   }

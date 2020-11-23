@@ -8,6 +8,7 @@ import KeyEventController from './keyEventController';
 import Logo from './logo'; 
 import Point from './point';
 import Next from './next';
+import StartLine from './startLine';
 
 resize();
 window.addEventListener('resize', resize);
@@ -17,7 +18,8 @@ window.tetris = {
     nextBlock: getNextBlock(),
     matrixState: blankMatrix,
     speed: 500,
-    lock: false
+    lock: false,
+    startLines: 2
   },
   matrix: new Matrix(),
   keyboard: new Keyboard(),
@@ -25,6 +27,7 @@ window.tetris = {
   keyEventController: new KeyEventController(),
   logo: new Logo(),
   point: new Point(),
-  next: new Next()
+  next: new Next(),
+  startLine: new StartLine()
 }
 window.tetris.stateManager.ready();

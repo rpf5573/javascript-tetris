@@ -52,6 +52,10 @@ body {
   // next에서도 쓰니까 밖으로 빼놨다
   .line {
     overflow: auto;
+    &.active .b {
+      border: $blockBorderWidth solid black;
+      &:after { background: black; }
+    }
     .b {
       width: $blockContentWidth;
       height: $blockContentHeight;
