@@ -17,11 +17,15 @@ export default class ArrowDown implements Tetris.KeyControl {
       gs.currentBlock = nextBlock;
     }
   }
+  decreaseSpeed = () => {
+    window.tetris.speed.updateSpeed(1);
+  }
   keyDown = () => {
-    if (window.tetris.states.lock === true) {return}
+    const tetris = window.tetris;
     window.tetris.keyEventController.down({
       keyType: this.type,
-      callback: this.blockDown,
+      callback: (tetris.states.currentBlock != null ) ? this.blockDown : this.decreaseSpeed,
+      once: (tetris.states.currentBlock != null ) ? false : true,
     });
   }
   keyUp = () => {

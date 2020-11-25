@@ -17,10 +17,14 @@ export default class ArrowUp implements Tetris.KeyControl {
       gs.currentBlock = nextBlock;
     }
   }
+  increaseSpeed = () => {
+    window.tetris.speed.updateSpeed(1);
+  }
   keyDown = () => {
+    const tetris = window.tetris;
     window.tetris.keyEventController.down({
       keyType: this.type,
-      callback: this.blockUp,
+      callback: (tetris.states.currentBlock != null ) ? this.blockUp : this.increaseSpeed,
       once: true
     });
   }

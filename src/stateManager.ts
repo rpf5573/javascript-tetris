@@ -65,7 +65,8 @@ class StateManager {
   gameOver = () => {
     this.lock();
     const tetris = window.tetris;
-    const point = tetris.point.point;
+    const point = tetris.states.point;
+    tetris.keyEventController.clearEventAll(); // 이전에 막 화살표를 누른게 있을수도 있으니까 지워준다.
     localStorage.setItem('last-point', `${point}`);
     tetris.matrix.reset(() => {
       setTimeout(() => {

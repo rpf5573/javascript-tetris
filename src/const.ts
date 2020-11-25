@@ -86,9 +86,11 @@ const keyCodeWithType: {[key: number]: Tetris.KeyType;} = {
   32: 'space', 82: 'r', 80: 'p',
 }
 const keyCodes = Object.keys(keyCodeWithType).map(e => parseInt(e, 10));
+const LAST_ROUND = 'Last Round';
+const POINT = 'Point';
 
 export {
-  width, height,
+  width, height, LAST_ROUND, POINT,
   blockShapes, yxRotateOrigin, blockTypes, speeds, yxStartPosition,
   delays, fillLine, blankLine, blankMatrix, clearPoints,
   StorageKey, maxPoint, eachLines, keyCodeWithType, keyCodes

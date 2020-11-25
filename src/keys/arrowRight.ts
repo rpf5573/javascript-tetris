@@ -18,15 +18,15 @@ export default class ArrowRight implements Tetris.KeyControl {
       gs.currentBlock = nextBlock;
     }
   }
-  startLineUp = () => {
-    const tetris = window.tetris;
-    
+  increaseStartLines = () => {
+    window.tetris.startLines.updateStartLines(1);
   }
   keyDown = () => {
     const tetris = window.tetris;
     window.tetris.keyEventController.down({
       keyType: this.type,
-      callback: (tetris.states.currentBlock != null ) ? this.blockRight : this.startLineUp,
+      callback: (tetris.states.currentBlock != null ) ? this.blockRight : this.increaseStartLines,
+      once: (tetris.states.currentBlock != null ) ? false : true,
     });
   }
   keyUp = () => {

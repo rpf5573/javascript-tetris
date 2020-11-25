@@ -17,10 +17,15 @@ export default class ArrowLeft implements Tetris.KeyControl {
       gs.currentBlock = nextBlock;
     }
   }
+  decreaseStartLines = () => {
+    window.tetris.startLines.updateStartLines(-1);
+  }
   keyDown = () => {
-    window.tetris.keyEventController.down({
+    const tetris = window.tetris;
+    tetris.keyEventController.down({
       keyType: this.type,
-      callback: this.blockLeft
+      callback: (tetris.states.currentBlock != null ) ? this.blockLeft : this.decreaseStartLines,
+      once: (tetris.states.currentBlock != null ) ? false : true,
     });
   }
   keyUp = () => {

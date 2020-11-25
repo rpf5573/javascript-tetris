@@ -13,6 +13,13 @@ class KeyEventController {
       }
     });
   }
+  clearEventAll = () => {
+    const keys = Object.keys(this.events);
+    keys.forEach((k:Tetris.KeyType) => {
+      clearTimeout(this.events[k]);
+      this.events[k] = null;
+    });
+  }
   down = (e: Tetris.KeyCallback) => {
     if (window.tetris.states.lock === true) { return }
     if (this.activeKey == e.keyType) { return }
