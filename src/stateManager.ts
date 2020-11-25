@@ -1,5 +1,5 @@
 import {getNextBlock, deepCopy, getClearLines, isOver, getStartMatrix} from './utils';
-import {blankMatrix} from './const';
+import {blankMatrix, LAST_ROUND, POINT} from './const';
 
 class StateManager {
   constructor() {}
@@ -16,7 +16,7 @@ class StateManager {
 
     const lastPoint = Number(localStorage.getItem('last-point'));
     if ( lastPoint > 0 ) {
-      tetris.point.changeTitle(tetris.point.lr);
+      tetris.point.changeTitle(LAST_ROUND);
       tetris.point.render(lastPoint); // 그리기만 하고 넣지는 말자
     }
 
@@ -36,7 +36,7 @@ class StateManager {
   start = () => {
     const tetris = window.tetris;
     tetris.logo.hide();
-    tetris.point.reset(tetris.point.p); // 포인트 리셋해야지
+    tetris.point.reset(POINT); // 포인트 리셋해야지
     setTimeout(() => {
       const gs = window.tetris.states;
       gs.matrixState = getStartMatrix(gs.startLines);

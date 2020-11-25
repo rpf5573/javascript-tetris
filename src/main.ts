@@ -20,7 +20,7 @@ window.tetris = {
     matrixState: blankMatrix,
     speed: 500,
     lock: false,
-    startLines: 2,
+    startLines: 0,
     point: 0
   },
   matrix: new Matrix(),

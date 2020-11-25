@@ -18,7 +18,7 @@ export default class ArrowDown implements Tetris.KeyControl {
     }
   }
   decreaseSpeed = () => {
-    window.tetris.speed.updateSpeed(1);
+    window.tetris.speed.updateSpeed(-100);
   }
   keyDown = () => {
     const tetris = window.tetris;

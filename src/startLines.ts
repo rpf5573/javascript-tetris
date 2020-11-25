@@ -10,7 +10,8 @@ class StartLines extends Numbers {
     const gs = window.tetris.states;
     const startLines = gs.startLines + sl;
     if (startLines >= 10) { gs.startLines = 10; }
-    if (startLines < 0) { gs.startLines = 0; }
+    else if (startLines < 0) { gs.startLines = 0; }
+    else { gs.startLines = startLines; }
     this.render(gs.startLines); 
   }
   reset = () => {
